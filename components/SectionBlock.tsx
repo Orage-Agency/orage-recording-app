@@ -1,28 +1,44 @@
 'use client';
 
+import { forwardRef } from 'react';
 import type { ScriptSection, SectionType } from '@/lib/types';
 import { SECTION_COLOR, SECTION_LABEL } from '@/lib/brand';
 import AutoTextarea from './AutoTextarea';
 
 interface Props {
   section: ScriptSection;
+  index: number;
+  isCurrent: boolean;
   mode: 'READ' | 'EDIT';
   onChange: (next: ScriptSection) => void;
   onCommit: () => void;
   onRemove: () => void;
 }
 
-export default function SectionBlock({ section, mode, onChange, onCommit, onRemove }: Props) {
+const SectionBlock = forwardRef<HTMLElement, Props>(function SectionBlock(
+  { section, index, isCurrent, mode, onChange, onCommit, onRemove },
+  ref
+) {
   const color = SECTION_COLOR[section.type];
   const dimmed = section.completed && mode === 'READ';
+  const highlighted = isCurrent && !section.completed && mode === 'READ';
 
   return (
     <section
-      className={`rounded-sm bg-ink-2 border-l-4 transition-all ${dimmed ? 'opacity-40' : ''}`}
+      ref={ref}
+      className={`scroll-mt-32 rounded-sm bg-ink-2 border-l-[3px] transition-all duration-500 ${
+        dimmed ? 'opacity-35' : 'opacity-100'
+      } ${highlighted ? 'ring-1 ring-gold/40' : ''}`}
       style={{ borderLeftColor: color }}
+      aria-current={isCurrent ? 'step' : undefined}
     >
       <header className="flex items-center justify-between px-5 py-3 border-b border-[color:var(--border-subtle)]">
         <div className="flex items-center gap-3 min-w-0">
+          <span
+            className="font-display text-[10px] tracking-[0.3em] text-cream/40 tabular-nums"
+          >
+            {String(index + 1).padStart(2, '0')}
+          </span>
           <span
             className="font-display text-xs tracking-[0.3em]"
             style={{ color }}
@@ -39,7 +55,7 @@ export default function SectionBlock({ section, mode, onChange, onCommit, onRemo
               placeholder="0:00–0:04"
             />
           ) : (
-            <span className="text-xs font-mono text-cream/50">{section.timecode}</span>
+            <span className="text-xs font-mono text-cream/45">{section.timecode}</span>
           )}
         </div>
 
@@ -59,23 +75,24 @@ export default function SectionBlock({ section, mode, onChange, onCommit, onRemo
               onChange({ ...section, completed: !section.completed });
               onCommit();
             }}
-            className="w-11 h-11 rounded-sm flex items-center justify-center transition-colors"
+            className="w-11 h-11 rounded-sm flex items-center justify-center transition-all duration-300 active:scale-95"
             style={{
               backgroundColor: section.completed ? color : 'transparent',
-              border: `1.5px solid ${color}`,
+              border: `1.5px solid ${color}${section.completed ? '' : '88'}`,
             }}
             aria-label={section.completed ? 'Mark incomplete' : 'Mark complete'}
+            aria-pressed={section.completed}
           >
-            {section.completed ? (
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            {section.completed && (
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" className="animate-fade-in">
                 <path d="M5 12.5L9.5 17L19 7" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-            ) : null}
+            )}
           </button>
         </div>
       </header>
 
-      <div className="p-5 space-y-3">
+      <div className="p-5 sm:p-6 space-y-3">
         {mode === 'EDIT' ? (
           <>
             <div>
@@ -134,16 +151,16 @@ export default function SectionBlock({ section, mode, onChange, onCommit, onRemo
         ) : (
           <>
             {section.action && (
-              <p className="text-base sm:text-lg italic text-cream/60 leading-relaxed font-light">
+              <p className="text-base sm:text-lg italic text-cream/55 leading-relaxed font-light">
                 {section.action}
               </p>
             )}
             {section.spokenLines.length > 0 && (
-              <div className="space-y-3 pt-1">
+              <div className="space-y-4 pt-2">
                 {section.spokenLines.map((line, i) => (
                   <p
                     key={i}
-                    className="text-2xl sm:text-3xl font-medium leading-snug text-cream-soft text-balance"
+                    className="text-2xl sm:text-3xl lg:text-[2.25rem] font-medium leading-snug text-cream-soft text-balance"
                   >
                     {line}
                   </p>
@@ -158,7 +175,9 @@ export default function SectionBlock({ section, mode, onChange, onCommit, onRemo
       </div>
     </section>
   );
-}
+});
+
+export default SectionBlock;
 
 export function newSection(type: SectionType): ScriptSection {
   return {

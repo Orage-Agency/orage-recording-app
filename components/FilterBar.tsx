@@ -40,53 +40,51 @@ export default function FilterBar({ filters, onChange }: Props) {
     filters.source === 'all';
 
   return (
-    <div className="bg-ink-1 border-b border-[color:var(--border-subtle)]">
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 py-3 flex items-center gap-2 flex-wrap">
-        <SelectField
-          label="Status"
-          value={filters.status}
-          onChange={(v) => onChange({ ...filters, status: v as Status | 'all' })}
-          options={[
-            { value: 'all', label: 'All' },
-            ...ALL_STATUSES.map((s) => ({ value: s, label: STATUS_LABEL[s] })),
-          ]}
-        />
-        <SelectField
-          label="Format"
-          value={filters.format}
-          onChange={(v) => onChange({ ...filters, format: v as Format | 'all' })}
-          options={[
-            { value: 'all', label: 'All' },
-            ...ALL_FORMATS.map((f) => ({ value: f, label: FORMAT_LABEL[f] })),
-          ]}
-        />
-        <SelectField
-          label="Wedge"
-          value={filters.wedge}
-          onChange={(v) => onChange({ ...filters, wedge: v as Wedge | 'all' })}
-          options={[
-            { value: 'all', label: 'All' },
-            ...ALL_WEDGES.map((w) => ({ value: w, label: WEDGE_LABEL[w] })),
-          ]}
-        />
-        <SelectField
-          label="Source"
-          value={filters.source}
-          onChange={(v) => onChange({ ...filters, source: v as Source | 'all' })}
-          options={[
-            { value: 'all', label: 'All' },
-            ...ALL_SOURCES.map((s) => ({ value: s, label: s })),
-          ]}
-        />
+    <div className="flex items-center gap-2 flex-wrap">
+      <SelectField
+        label="Status"
+        value={filters.status}
+        onChange={(v) => onChange({ ...filters, status: v as Status | 'all' })}
+        options={[
+          { value: 'all', label: 'All' },
+          ...ALL_STATUSES.map((s) => ({ value: s, label: STATUS_LABEL[s] })),
+        ]}
+      />
+      <SelectField
+        label="Format"
+        value={filters.format}
+        onChange={(v) => onChange({ ...filters, format: v as Format | 'all' })}
+        options={[
+          { value: 'all', label: 'All' },
+          ...ALL_FORMATS.map((f) => ({ value: f, label: FORMAT_LABEL[f] })),
+        ]}
+      />
+      <SelectField
+        label="Wedge"
+        value={filters.wedge}
+        onChange={(v) => onChange({ ...filters, wedge: v as Wedge | 'all' })}
+        options={[
+          { value: 'all', label: 'All' },
+          ...ALL_WEDGES.map((w) => ({ value: w, label: WEDGE_LABEL[w] })),
+        ]}
+      />
+      <SelectField
+        label="Source"
+        value={filters.source}
+        onChange={(v) => onChange({ ...filters, source: v as Source | 'all' })}
+        options={[
+          { value: 'all', label: 'All' },
+          ...ALL_SOURCES.map((s) => ({ value: s, label: s })),
+        ]}
+      />
 
-        <button
-          onClick={() => onChange(DEFAULT_FILTERS)}
-          disabled={isDefault}
-          className="ml-auto font-display text-[11px] tracking-[0.25em] text-cream/60 hover:text-gold-high disabled:opacity-30 disabled:cursor-not-allowed px-3 py-2 min-touch"
-        >
-          Reset
-        </button>
-      </div>
+      <button
+        onClick={() => onChange(DEFAULT_FILTERS)}
+        disabled={isDefault}
+        className="ml-auto font-display text-[11px] tracking-[0.25em] text-cream/60 hover:text-gold-high disabled:opacity-30 disabled:cursor-not-allowed px-3 py-2 min-touch"
+      >
+        Reset
+      </button>
     </div>
   );
 }
