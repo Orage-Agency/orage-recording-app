@@ -1,5 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
+import { put, list } from '@vercel/blob';
 import type { Script, VerbalHook, PreHook } from './types';
 
 const DATA_DIR = path.join(process.cwd(), 'data');
@@ -7,17 +8,57 @@ const SCRIPTS_FILE = path.join(DATA_DIR, 'scripts.json');
 const HOOKS_FILE = path.join(DATA_DIR, 'hooks.json');
 const PREHOOKS_FILE = path.join(DATA_DIR, 'preHooks.json');
 
-async function readJson<T>(file: string): Promise<T> {
+const SCRIPTS_BLOB_KEY = 'scripts.json';
+
+const hasBlob = () => Boolean(process.env.BLOB_READ_WRITE_TOKEN);
+
+async function readSeed<T>(file: string): Promise<T> {
   const raw = await fs.readFile(file, 'utf8');
   return JSON.parse(raw) as T;
 }
 
-async function writeJson<T>(file: string, data: T): Promise<void> {
+async function writeFileFallback<T>(file: string, data: T): Promise<void> {
   await fs.writeFile(file, JSON.stringify(data, null, 2), 'utf8');
 }
 
+async function readScriptsFromBlob(): Promise<Script[] | null> {
+  try {
+    const { blobs } = await list({ prefix: SCRIPTS_BLOB_KEY, limit: 1 });
+    const found = blobs.find((b) => b.pathname === SCRIPTS_BLOB_KEY);
+    if (!found) return null;
+    // Append cache-buster so any CDN edge serves the freshest version after writes
+    const res = await fetch(`${found.url}?v=${Date.now()}`, { cache: 'no-store' });
+    if (!res.ok) return null;
+    return (await res.json()) as Script[];
+  } catch {
+    return null;
+  }
+}
+
+async function writeScriptsToBlob(scripts: Script[]): Promise<void> {
+  await put(SCRIPTS_BLOB_KEY, JSON.stringify(scripts, null, 2), {
+    access: 'public',
+    contentType: 'application/json',
+    addRandomSuffix: false,
+    allowOverwrite: true,
+    cacheControlMaxAge: 0,
+  });
+}
+
+async function ensureSeeded(): Promise<Script[]> {
+  if (!hasBlob()) {
+    return readSeed<Script[]>(SCRIPTS_FILE);
+  }
+  const fromBlob = await readScriptsFromBlob();
+  if (fromBlob) return fromBlob;
+  // First run — seed blob from bundled JSON.
+  const seed = await readSeed<Script[]>(SCRIPTS_FILE);
+  await writeScriptsToBlob(seed);
+  return seed;
+}
+
 export async function getScripts(): Promise<Script[]> {
-  return readJson<Script[]>(SCRIPTS_FILE);
+  return ensureSeeded();
 }
 
 export async function getScript(id: string): Promise<Script | null> {
@@ -39,14 +80,22 @@ export async function updateScript(
     updatedAt: new Date().toISOString(),
   };
   all[idx] = updated;
-  await writeJson(SCRIPTS_FILE, all);
+  if (hasBlob()) {
+    await writeScriptsToBlob(all);
+  } else {
+    await writeFileFallback(SCRIPTS_FILE, all);
+  }
   return updated;
 }
 
 export async function createScript(script: Script): Promise<Script> {
   const all = await getScripts();
   all.push(script);
-  await writeJson(SCRIPTS_FILE, all);
+  if (hasBlob()) {
+    await writeScriptsToBlob(all);
+  } else {
+    await writeFileFallback(SCRIPTS_FILE, all);
+  }
   return script;
 }
 
@@ -54,16 +103,20 @@ export async function deleteScript(id: string): Promise<boolean> {
   const all = await getScripts();
   const next = all.filter((s) => s.id !== id);
   if (next.length === all.length) return false;
-  await writeJson(SCRIPTS_FILE, next);
+  if (hasBlob()) {
+    await writeScriptsToBlob(next);
+  } else {
+    await writeFileFallback(SCRIPTS_FILE, next);
+  }
   return true;
 }
 
 export async function getHooks(): Promise<VerbalHook[]> {
-  return readJson<VerbalHook[]>(HOOKS_FILE);
+  return readSeed<VerbalHook[]>(HOOKS_FILE);
 }
 
 export async function getPreHooks(): Promise<PreHook[]> {
-  return readJson<PreHook[]>(PREHOOKS_FILE);
+  return readSeed<PreHook[]>(PREHOOKS_FILE);
 }
 
 export async function getNextScriptId(currentId: string): Promise<string | null> {
@@ -73,3 +126,15 @@ export async function getNextScriptId(currentId: string): Promise<string | null>
   if (idx === -1 || idx === sorted.length - 1) return null;
   return sorted[idx + 1].id;
 }
+
+// Reset blob to seed (for debugging / re-seeding)
+export async function resetScripts(): Promise<Script[]> {
+  const seed = await readSeed<Script[]>(SCRIPTS_FILE);
+  if (hasBlob()) {
+    await writeScriptsToBlob(seed);
+  } else {
+    await writeFileFallback(SCRIPTS_FILE, seed);
+  }
+  return seed;
+}
+

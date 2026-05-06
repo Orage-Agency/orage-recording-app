@@ -23,7 +23,7 @@
   --border-subtle:     rgba(182,128,57,0.10);
   --border-strong:     rgba(182,128,57,0.45);
 
-  --section-visual:    #7C3AED;
+  --section-visual:    #A78BFA;
   --section-verbal:    #0891B2;
   --section-body:      #059669;
   --section-cta:       #DC2626;
@@ -31,7 +31,7 @@
   --status-draft:      #6B7280;
   --status-ready:      #B68039;
   --status-shooting:   #2563EB;
-  --status-recorded:   #7C3AED;
+  --status-recorded:   #A78BFA;
   --status-edited:     #0891B2;
   --status-live:       #059669;
   --status-winner:     #16A34A;

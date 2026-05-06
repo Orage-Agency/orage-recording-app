@@ -17,7 +17,7 @@ export const BRAND = {
     border: 'rgba(182,128,57,0.25)',
     borderSubtle: 'rgba(182,128,57,0.12)',
 
-    visualHook: '#7C3AED',
+    visualHook: '#A78BFA',
     verbalHook: '#0891B2',
     body: '#059669',
     cta: '#DC2626',
@@ -25,7 +25,7 @@ export const BRAND = {
     statusDraft: '#6B7280',
     statusReady: '#B68039',
     statusShooting: '#2563EB',
-    statusRecorded: '#7C3AED',
+    statusRecorded: '#A78BFA',
     statusEdited: '#0891B2',
     statusLive: '#059669',
     statusWinner: '#16A34A',

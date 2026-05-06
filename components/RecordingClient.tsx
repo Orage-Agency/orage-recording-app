@@ -7,7 +7,8 @@ import type { Script, ScriptSection, Status, SectionType } from '@/lib/types';
 import StatusSelect from './StatusSelect';
 import SectionBlock, { newSection } from './SectionBlock';
 import ShotDirectionsPanel from './ShotDirectionsPanel';
-import Toast from './Toast';
+import FocusOverlay from './FocusOverlay';
+import UndoToast, { type UndoToastModel } from './UndoToast';
 
 type SaveState = 'idle' | 'saving' | 'saved' | 'error';
 
@@ -20,14 +21,17 @@ export default function RecordingClient({ initial, nextScriptId }: Props) {
   const router = useRouter();
   const [script, setScript] = useState<Script>(initial);
   const [mode, setMode] = useState<'READ' | 'EDIT'>('READ');
+  const [focus, setFocus] = useState(false);
   const [save, setSave] = useState<SaveState>('idle');
-  const [toast, setToast] = useState<{ msg: string; tone: 'success' | 'info' | 'error'; at: number } | null>(null);
   const [recordedHighlight, setRecordedHighlight] = useState(false);
+
+  const [undoToast, setUndoToast] = useState<UndoToastModel | null>(null);
+  const advanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const sectionRefs = useRef<Array<HTMLElement | null>>([]);
   sectionRefs.current = script.sections.map((_, i) => sectionRefs.current[i] ?? null);
 
-  const persist = useCallback(async (next: Script, opts?: { silent?: boolean }) => {
+  const persist = useCallback(async (next: Script) => {
     setSave('saving');
     try {
       const res = await fetch(`/api/scripts/${next.id}`, {
@@ -37,11 +41,9 @@ export default function RecordingClient({ initial, nextScriptId }: Props) {
       });
       if (!res.ok) throw new Error('save failed');
       setSave('saved');
-      if (!opts?.silent) setToast({ msg: 'Saved', tone: 'info', at: Date.now() });
-      setTimeout(() => setSave('idle'), 1500);
+      setTimeout(() => setSave('idle'), 1200);
     } catch {
       setSave('error');
-      setToast({ msg: 'Save failed', tone: 'error', at: Date.now() });
     }
   }, []);
 
@@ -58,7 +60,7 @@ export default function RecordingClient({ initial, nextScriptId }: Props) {
 
   const commit = useCallback(() => {
     setScript((curr) => {
-      persist(curr, { silent: true });
+      persist(curr);
       return curr;
     });
   }, [persist]);
@@ -71,6 +73,19 @@ export default function RecordingClient({ initial, nextScriptId }: Props) {
   const firstPendingIdx = script.sections.findIndex((s) => !s.completed);
   const currentIdx = firstPendingIdx === -1 ? script.sections.length - 1 : firstPendingIdx;
 
+  const showUndo = (model: Omit<UndoToastModel, 'id'>) => {
+    setUndoToast({ id: `t-${Date.now()}`, ...model });
+  };
+
+  const dismissUndo = () => setUndoToast(null);
+
+  const cancelAutoAdvance = () => {
+    if (advanceTimerRef.current) {
+      clearTimeout(advanceTimerRef.current);
+      advanceTimerRef.current = null;
+    }
+  };
+
   const updateSection = (idx: number, next: ScriptSection) => {
     setScript((prev) => {
       const sections = [...prev.sections];
@@ -80,23 +95,43 @@ export default function RecordingClient({ initial, nextScriptId }: Props) {
   };
 
   const toggleSection = (idx: number) => {
+    cancelAutoAdvance();
     let willComplete = false;
+    let snapshot: ScriptSection | null = null;
     setScript((prev) => {
       const sections = [...prev.sections];
-      const wasCompleted = sections[idx].completed;
-      sections[idx] = { ...sections[idx], completed: !wasCompleted };
-      willComplete = !wasCompleted;
+      const before = sections[idx];
+      snapshot = before;
+      const after: ScriptSection = { ...before, completed: !before.completed };
+      sections[idx] = after;
+      willComplete = !before.completed;
       const next = { ...prev, sections };
-      persist(next, { silent: true });
+      persist(next);
       return next;
     });
-    if (willComplete && mode === 'READ') {
+
+    showUndo({
+      message: willComplete ? 'Section complete' : 'Section reopened',
+      durationMs: 2400,
+      onUndo: () => {
+        if (!snapshot) return;
+        cancelAutoAdvance();
+        setScript((prev) => {
+          const sections = [...prev.sections];
+          sections[idx] = snapshot!;
+          const next = { ...prev, sections };
+          persist(next);
+          return next;
+        });
+        dismissUndo();
+      },
+      onExpire: dismissUndo,
+    });
+
+    if (willComplete && mode === 'READ' && !focus) {
       setTimeout(() => {
-        const nextIdx = idx + 1;
-        const target = sectionRefs.current[nextIdx];
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
+        const target = sectionRefs.current[idx + 1];
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }, 280);
     }
   };
@@ -114,7 +149,18 @@ export default function RecordingClient({ initial, nextScriptId }: Props) {
     setTimeout(commit, 0);
   };
 
+  const goNext = useCallback(() => {
+    cancelAutoAdvance();
+    if (nextScriptId) router.push(`/script/${nextScriptId}`);
+  }, [nextScriptId, router]);
+
+  const goBack = useCallback(() => {
+    cancelAutoAdvance();
+    router.push('/');
+  }, [router]);
+
   const markRecorded = async () => {
+    cancelAutoAdvance();
     const next: Script = {
       ...script,
       status: 'recorded',
@@ -122,25 +168,44 @@ export default function RecordingClient({ initial, nextScriptId }: Props) {
     };
     setScript(next);
     setRecordedHighlight(true);
-    await persist(next, { silent: true });
-    setToast({ msg: '✓ Recorded', tone: 'success', at: Date.now() });
+    setFocus(false);
+    await persist(next);
+
+    if (nextScriptId) {
+      showUndo({
+        message: '✓ Recorded — advancing',
+        durationMs: 1600,
+        onUndo: () => {
+          cancelAutoAdvance();
+          dismissUndo();
+        },
+        onExpire: () => {
+          dismissUndo();
+        },
+      });
+      advanceTimerRef.current = setTimeout(() => {
+        router.push(`/script/${nextScriptId}`);
+      }, 1500);
+    } else {
+      showUndo({
+        message: '✓ Recorded',
+        durationMs: 1800,
+        onUndo: dismissUndo,
+        onExpire: dismissUndo,
+      });
+    }
+
     setTimeout(() => setRecordedHighlight(false), 1400);
   };
 
-  const goNext = () => {
-    if (nextScriptId) router.push(`/script/${nextScriptId}`);
-  };
-
-  const goBack = () => router.push('/');
-
   const setStatus = (status: Status) => {
+    cancelAutoAdvance();
     const next = { ...script, status };
     setScript(next);
-    persist(next, { silent: true });
-    setToast({ msg: status.replace('_', ' ').toUpperCase(), tone: 'info', at: Date.now() });
+    persist(next);
   };
 
-  // Keyboard shortcuts
+  // Keyboard shortcuts (READ mode only)
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement;
@@ -156,18 +221,56 @@ export default function RecordingClient({ initial, nextScriptId }: Props) {
         } else if (script.status !== 'recorded') {
           markRecorded();
         }
+      } else if (e.key === 'f' || e.key === 'F') {
+        e.preventDefault();
+        setFocus((v) => !v);
       } else if (e.key === 'ArrowRight' && nextScriptId) {
         e.preventDefault();
         goNext();
       } else if (e.key === 'Escape') {
         e.preventDefault();
-        goBack();
+        if (focus) setFocus(false);
+        else goBack();
       }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode, firstPendingIdx, script.id, nextScriptId, script.status]);
+  }, [mode, focus, firstPendingIdx, script.id, nextScriptId, script.status]);
+
+  // Touch swipe (only in READ, not focus)
+  useEffect(() => {
+    if (mode !== 'READ' || focus) return;
+    let startX = 0;
+    let startY = 0;
+    let startT = 0;
+    const onStart = (e: TouchEvent) => {
+      const t = e.touches[0];
+      startX = t.clientX;
+      startY = t.clientY;
+      startT = Date.now();
+    };
+    const onEnd = (e: TouchEvent) => {
+      const t = e.changedTouches[0];
+      const dx = t.clientX - startX;
+      const dy = t.clientY - startY;
+      const dt = Date.now() - startT;
+      if (dt > 600) return;
+      if (Math.abs(dy) > 60) return; // vertical scroll, ignore
+      if (Math.abs(dx) < 90) return;
+      if (dx < 0 && nextScriptId) goNext();
+      else if (dx > 0) goBack();
+    };
+    window.addEventListener('touchstart', onStart, { passive: true });
+    window.addEventListener('touchend', onEnd, { passive: true });
+    return () => {
+      window.removeEventListener('touchstart', onStart);
+      window.removeEventListener('touchend', onEnd);
+    };
+  }, [mode, focus, nextScriptId, goNext, goBack]);
+
+  // Cleanup advance timer
+  useEffect(() => () => cancelAutoAdvance(), []);
 
   const saveLabel = useMemo(() => {
     if (save === 'saving') return 'Saving';
@@ -208,6 +311,18 @@ export default function RecordingClient({ initial, nextScriptId }: Props) {
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={() => setFocus(true)}
+              className="hidden sm:inline-flex items-center gap-2 font-display text-xs tracking-[0.25em] text-cream/70 hover:text-gold-high border border-[color:var(--border-subtle)] hover:border-gold rounded-sm px-3 py-1.5 min-touch transition-colors"
+              aria-label="Enter focus mode"
+              title="Focus mode (F)"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <path d="M4 9V4H9M20 9V4H15M4 15V20H9M20 15V20H15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              Focus
+            </button>
+
             <div className="inline-flex bg-ink-2 border border-[color:var(--border-subtle)] rounded-sm p-0.5 font-display text-xs tracking-[0.2em]">
               <button
                 onClick={() => setMode('READ')}
@@ -231,7 +346,6 @@ export default function RecordingClient({ initial, nextScriptId }: Props) {
           </div>
         </div>
 
-        {/* Progress bar */}
         <div className="h-[2px] w-full bg-black/60 relative">
           <div
             className="h-full bg-gradient-to-r from-gold to-gold-high transition-all duration-500 ease-out"
@@ -264,7 +378,7 @@ export default function RecordingClient({ initial, nextScriptId }: Props) {
             />
           ))}
 
-          {allComplete && mode === 'READ' && (
+          {allComplete && mode === 'READ' && script.status !== 'recorded' && (
             <div className="rounded-sm bg-gold/8 border border-gold/40 p-6 text-center animate-rise">
               <div className="eyebrow mb-2">All sections complete</div>
               <p className="font-display text-2xl tracking-[0.08em] text-gold-high mb-1">
@@ -350,7 +464,16 @@ export default function RecordingClient({ initial, nextScriptId }: Props) {
         </div>
       </div>
 
-      {toast && <Toast message={toast.msg} tone={toast.tone} shownAt={toast.at} />}
+      {focus && (
+        <FocusOverlay
+          script={script}
+          currentIdx={currentIdx}
+          onToggle={toggleSection}
+          onExit={() => setFocus(false)}
+        />
+      )}
+
+      <UndoToast toast={undoToast} />
     </>
   );
 }

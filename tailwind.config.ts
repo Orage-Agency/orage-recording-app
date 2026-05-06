@@ -27,7 +27,7 @@ const config: Config = {
           light: '#FCE8D4',
         },
         section: {
-          visual: '#7C3AED',
+          visual: '#A78BFA',
           verbal: '#0891B2',
           body: '#059669',
           cta: '#DC2626',
@@ -36,7 +36,7 @@ const config: Config = {
           draft: '#6B7280',
           ready: '#B68039',
           shooting: '#2563EB',
-          recorded: '#7C3AED',
+          recorded: '#A78BFA',
           edited: '#0891B2',
           live: '#059669',
           winner: '#16A34A',
