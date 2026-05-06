@@ -1,0 +1,57 @@
+[
+  {
+    "id": "ph-01",
+    "title": "Starbucks Drive-Thru",
+    "scene": "George at Starbucks drive-through window. Hands over card. Barista (cofounder or friend dressed casually) hands coffee back.",
+    "action": "Barista: \"You're one of those guys still doing everything by hand?\" George takes coffee, shrugs, turns to camera with deadpan look.",
+    "duration": "3 sec",
+    "feel": "Awkward. Slightly funny. Real.",
+    "pairsWithWedges": ["AUTOMATION", "DECISION_FATIGUE", "MARGIN_CLIFF"],
+    "shootNotes": "Use actual car. Phone mounted on dashboard or held by passenger. Natural light. One take usually enough — the awkwardness IS the hook.",
+    "status": "ready_to_shoot"
+  },
+  {
+    "id": "ph-02",
+    "title": "Gym, No Weights",
+    "scene": "George at Lifetime Fitness. Empty barbell. Doing reps with no weight.",
+    "action": "Big guy walks past, looks confused: \"Lots of reps but no weight? That's pointless.\" George stops, turns to camera, smirks: \"That's what running your business without AI looks like.\"",
+    "duration": "5 sec",
+    "feel": "Self-aware. Visual metaphor. Recognizable.",
+    "pairsWithWedges": ["TIME", "TEAM", "AUTOMATION", "SCALE"],
+    "shootNotes": "Lifetime Fitness Edmond. Need 1 friend (the 'big guy' character). Off-peak hour. One angle, locked tripod.",
+    "status": "ready_to_shoot"
+  },
+  {
+    "id": "ph-03",
+    "title": "Family Dinner Phone Toss",
+    "scene": "George at dinner table with family. Phone buzzes repeatedly. Family talking, getting interrupted.",
+    "action": "Wife or partner gives The Look. George tosses phone (gentle — onto chair or pillow). Turns to camera: \"Yeah. That's the problem.\"",
+    "duration": "4 sec",
+    "feel": "Vulnerable. Universally recognizable.",
+    "pairsWithWedges": ["TIME", "DEFENSIVE_MODE", "DECISION_FATIGUE"],
+    "shootNotes": "Real family setting if comfortable, or staged with friends. Soft warm light. Phone needs to be visibly buzzing. Practice the toss.",
+    "status": "ready_to_shoot"
+  },
+  {
+    "id": "ph-04",
+    "title": "Office Chaos",
+    "scene": "George at desk. Phone ringing. Laptop with 30+ unread emails. Cofounder walks in. Another person knocks. Phone rings again.",
+    "action": "George looks at all of it, exhales, slowly turns to camera. Holds the look for a beat.",
+    "duration": "3 sec",
+    "feel": "\"This is every day\" moment. No words needed.",
+    "pairsWithWedges": ["TEAM", "LEADS", "DEFENSIVE_MODE", "DECISION_FATIGUE", "CASH_FLOW"],
+    "shootNotes": "Need 2 people walking in/around. Real phone ringing (timer to call yourself). Real laptop with real or fake inbox. Most reusable pre-hook in the library.",
+    "status": "ready_to_shoot"
+  },
+  {
+    "id": "ph-05",
+    "title": "Multi-Location Teleport",
+    "scene": "Same outfit. Same energy. Walking into 4 different locations in fast succession.",
+    "action": "Cut 1: Walking out of Quintessa office. Cut 2: Walking into Tellers at The National. Cut 3: Walking into Café Evoke in Edmond. Cut 4: Sitting down at desk again. Each cut 0.5–1 sec. Lands on you at desk turning to camera.",
+    "duration": "5 sec total",
+    "feel": "Premium. Ambitious. \"I'm everywhere.\"",
+    "pairsWithWedges": ["SCALE", "CASH_FLOW"],
+    "shootNotes": "Same outfit across all 4 cuts. Shoot in same day. Phone gimbal helpful. Each location: 1 walk-in shot, 1 turn shot. ~30 seconds per location.",
+    "status": "ready_to_shoot"
+  }
+]

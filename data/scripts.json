@@ -1,0 +1,982 @@
+[
+  {
+    "id": "script-01",
+    "number": 1,
+    "source": "CLAUDE",
+    "title": "The Top-Down",
+    "recommended": true,
+    "priorityRank": 1,
+    "wedge": "AUTOMATION",
+    "format": "WHITEBOARD",
+    "length": "22 sec",
+    "energy": "Confident, slightly fast — you're showing your method",
+    "setup": "Standing at whiteboard at Orage HQ. Marker in hand. Camera positioned to capture both you and the board.",
+    "shotDirections": [
+      "Camera at chest height, locked tripod",
+      "Frame: half whiteboard, half you",
+      "Window light from camera-left",
+      "Wear collared shirt, no logo"
+    ],
+    "sections": [
+      {
+        "id": "s01-1",
+        "type": "VISUAL_HOOK",
+        "timecode": "0:00–0:04",
+        "action": "Sketch a simple pyramid fast on whiteboard. Top: 'FOUNDER.' Middle: 'LEADERSHIP.' Bottom: 'TEAM.' Then circle the top hard with the marker.",
+        "spokenLines": [],
+        "completed": false
+      },
+      {
+        "id": "s01-2",
+        "type": "VERBAL_HOOK",
+        "timecode": "0:04–0:07",
+        "action": "Turn to camera. Marker still in hand.",
+        "spokenLines": [
+          "Most AI agencies start at the bottom. We start here."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s01-3",
+        "type": "BODY",
+        "timecode": "0:07–0:18",
+        "action": "Back at the board. Gesture as you talk. Tap items.",
+        "spokenLines": [
+          "We look at what the founder is doing every morning.",
+          "The dashboards he needs but doesn't have.",
+          "The Excel sheets eating his Tuesdays.",
+          "The inbox he should never be touching.",
+          "We take that off his plate first. Then we work down."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s01-4",
+        "type": "CTA",
+        "timecode": "0:18–0:22",
+        "action": "Back to direct camera. Marker at side.",
+        "spokenLines": [
+          "If you're the founder still doing leadership work AND admin work — book a free audit. Link below."
+        ],
+        "completed": false
+      }
+    ],
+    "status": "ready_to_shoot",
+    "notes": "",
+    "createdAt": "2026-05-05T00:00:00.000Z",
+    "updatedAt": "2026-05-06T04:40:17.035Z"
+  },
+  {
+    "id": "script-02",
+    "number": 2,
+    "source": "GEORGE",
+    "title": "Would Your Next Hire Eat All Your Profit?",
+    "recommended": true,
+    "priorityRank": 2,
+    "wedge": "CASH_FLOW",
+    "format": "BEHIND_DESK",
+    "length": "28 sec",
+    "energy": "Direct, slightly intense — financial reality talk",
+    "setup": "Behind desk at Orage HQ. Direct to camera. Notebook with rough numbers visible.",
+    "shotDirections": [
+      "Eye-level camera",
+      "Soft window light from camera-right",
+      "Slight lean-forward energy on the hook"
+    ],
+    "sections": [
+      {
+        "id": "s02-1",
+        "type": "VERBAL_HOOK",
+        "timecode": "0:00–0:05",
+        "action": "Direct to camera. Slight lean.",
+        "spokenLines": [
+          "Would your next hire eat all your profit? You know what you need to grow — but that step would also make you starve."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s02-2",
+        "type": "BODY",
+        "timecode": "0:05–0:22",
+        "action": "Stay on you. Conversational but pointed.",
+        "spokenLines": [
+          "I see it all the time. You're between one and three million dollars.",
+          "You're growing. But that next step feels like a risk.",
+          "You spend on ads — they don't convert the same.",
+          "Your next hire would eat all your profit.",
+          "Things look hard.",
+          "What if we could duplicate your team's output —",
+          "and guarantee you get a full day back per week?",
+          "52 days back per year. Or you don't pay.",
+          "That increases your conversion rate. Your productivity. Your cash flow.",
+          "It makes room for that key person your business actually needs."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s02-3",
+        "type": "CTA",
+        "timecode": "0:22–0:28",
+        "action": "Hold direct camera.",
+        "spokenLines": [
+          "If this sounds like you — click the link below and dominate with AI."
+        ],
+        "completed": false
+      }
+    ],
+    "status": "ready_to_shoot",
+    "notes": "",
+    "createdAt": "2026-05-05T00:00:00.000Z",
+    "updatedAt": "2026-05-05T00:00:00.000Z"
+  },
+  {
+    "id": "script-03",
+    "number": 3,
+    "source": "CLAUDE",
+    "title": "Nobody Wins If You Don't",
+    "recommended": true,
+    "priorityRank": 3,
+    "wedge": "DEFENSIVE_MODE",
+    "format": "BEHIND_DESK",
+    "length": "22 sec",
+    "energy": "Vulnerable, peer-to-peer — your founder voice",
+    "setup": "Behind desk at Orage HQ. Direct to camera. Slightly slower delivery.",
+    "shotDirections": [
+      "Eye-level camera",
+      "Hold position — no movement",
+      "Slow delivery, generous pauses"
+    ],
+    "sections": [
+      {
+        "id": "s03-1",
+        "type": "VERBAL_HOOK",
+        "timecode": "0:00–0:04",
+        "action": "Direct to camera. Slight lean forward.",
+        "spokenLines": [
+          "Most agencies want you to stay for three months. We don't."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s03-2",
+        "type": "BODY",
+        "timecode": "0:04–0:08",
+        "action": "Hold position. Pause after 'actually needs.'",
+        "spokenLines": [
+          "We want to be partners.",
+          "The kind your business actually needs."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s03-3",
+        "type": "BODY",
+        "timecode": "0:08–0:16",
+        "action": "Slow down on the guarantee. Land it.",
+        "spokenLines": [
+          "That's why our guarantee is so strong.",
+          "A day back per week. Or you don't pay.",
+          "Because if you don't win, we don't win.",
+          "That's the whole deal."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s03-4",
+        "type": "CTA",
+        "timecode": "0:16–0:22",
+        "action": "Hold the eye contact. Don't oversell.",
+        "spokenLines": [
+          "Free 45-minute audit.",
+          "We'll show you what winning looks like in your business. Link below."
+        ],
+        "completed": false
+      }
+    ],
+    "status": "ready_to_shoot",
+    "notes": "",
+    "createdAt": "2026-05-05T00:00:00.000Z",
+    "updatedAt": "2026-05-05T00:00:00.000Z"
+  },
+  {
+    "id": "script-04",
+    "number": 4,
+    "source": "CLAUDE",
+    "title": "The Phone That Won't Stop",
+    "recommended": true,
+    "priorityRank": 4,
+    "wedge": "LEADS",
+    "format": "PHONE_CLOSEUP",
+    "length": "20 sec",
+    "energy": "Empathetic, slightly tired",
+    "setup": "At desk. Real phone visible on the desk. Dark wood or clean surface.",
+    "shotDirections": [
+      "First shot: tight close-up on phone",
+      "Second shot: cut to you at desk",
+      "Phone needs to actually buzz on camera (timer to call yourself)"
+    ],
+    "sections": [
+      {
+        "id": "s04-1",
+        "type": "VISUAL_HOOK",
+        "timecode": "0:00–0:04",
+        "action": "Tight close-up on phone buzzing repeatedly. Five missed calls visible on screen. You glance at it from off-frame, look away, glance back. Phone keeps buzzing.",
+        "spokenLines": [],
+        "completed": false
+      },
+      {
+        "id": "s04-2",
+        "type": "VERBAL_HOOK",
+        "timecode": "0:04–0:08",
+        "action": "Cut to you at desk. Direct to camera. Slight head tilt.",
+        "spokenLines": [
+          "Be honest. How many of these did you not return today?"
+        ],
+        "completed": false
+      },
+      {
+        "id": "s04-3",
+        "type": "BODY",
+        "timecode": "0:08–0:16",
+        "action": "Hold position. Empathetic delivery. Slow on 'someone else.'",
+        "spokenLines": [
+          "Every missed call is a customer someone else is going to close.",
+          "I built voice agents that pick up every call,",
+          "qualify the lead,",
+          "and book the appointment.",
+          "Your phone stops being the boss of your day."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s04-4",
+        "type": "CTA",
+        "timecode": "0:16–0:20",
+        "action": "Same shot. Calm.",
+        "spokenLines": [
+          "Free 45-minute audit. Link below."
+        ],
+        "completed": false
+      }
+    ],
+    "status": "ready_to_shoot",
+    "notes": "",
+    "createdAt": "2026-05-05T00:00:00.000Z",
+    "updatedAt": "2026-05-05T00:00:00.000Z"
+  },
+  {
+    "id": "script-05",
+    "number": 5,
+    "source": "GEORGE",
+    "title": "What's Happening?",
+    "recommended": true,
+    "priorityRank": 5,
+    "wedge": "MARGIN_CLIFF",
+    "format": "SCREEN_RECORD",
+    "length": "30 sec",
+    "energy": "Cinematic, dialogue-driven — different from anything else",
+    "setup": "Screen showing a 'news' style chyron about a business shutting down. Dialogue between two people (you + cofounder/friend).",
+    "shotDirections": [
+      "Two-shot of you + second person watching screen",
+      "Close-up insert of 'news' graphic",
+      "Phone-in-hand shot for the 'let me call my friend' beat",
+      "Final beat: cut to camera direct"
+    ],
+    "sections": [
+      {
+        "id": "s05-1",
+        "type": "VISUAL_HOOK",
+        "timecode": "0:00–0:05",
+        "action": "Two-shot watching a screen. Visible chyron / graphic suggesting a business closing or 'destroyed by AI.' Voice-over from the second person.",
+        "spokenLines": [
+          "PERSON 2 (off): \"Is that a war?\"",
+          "YOU: \"What are you watching?\""
+        ],
+        "completed": false
+      },
+      {
+        "id": "s05-2",
+        "type": "BODY",
+        "timecode": "0:05–0:15",
+        "action": "Stay on the two-shot. Slight zoom in on the screen.",
+        "spokenLines": [
+          "PERSON 2: \"Some business got destroyed. They were strong for 5 years. I don't know what happened.\"",
+          "YOU: \"It was AI.\"",
+          "PERSON 2: \"What? They said they were fine. Kept doing things the same. And now they're gone.\""
+        ],
+        "completed": false
+      },
+      {
+        "id": "s05-3",
+        "type": "BODY",
+        "timecode": "0:15–0:23",
+        "action": "Cut to you direct. Then to a hypothetical viewer.",
+        "spokenLines": [
+          "PERSON 2: \"Damn. Is that happening to every business?\"",
+          "YOU: \"Only the ones not adopting AI.\"",
+          "YOU (to camera): \"If you're doing things the same way — admin, answering emails and calls after hours, your team moving like a slow turtle — you're next.\""
+        ],
+        "completed": false
+      },
+      {
+        "id": "s05-4",
+        "type": "BODY",
+        "timecode": "0:23–0:28",
+        "action": "Phone-in-hand shot.",
+        "spokenLines": [
+          "YOU (on phone): \"I have a friend who can help. Want me to call him?\"",
+          "YOU (texting): \"Hey, how many spots you have left?\"",
+          "REPLY VISIBLE: \"3.\""
+        ],
+        "completed": false
+      },
+      {
+        "id": "s05-5",
+        "type": "CTA",
+        "timecode": "0:28–0:30",
+        "action": "Direct to camera, holding phone.",
+        "spokenLines": [
+          "Use AI. Click the link."
+        ],
+        "completed": false
+      }
+    ],
+    "status": "ready_to_shoot",
+    "notes": "",
+    "createdAt": "2026-05-05T00:00:00.000Z",
+    "updatedAt": "2026-05-05T00:00:00.000Z"
+  },
+  {
+    "id": "script-06",
+    "number": 6,
+    "source": "CLAUDE",
+    "title": "The Inbox",
+    "recommended": false,
+    "priorityRank": 6,
+    "wedge": "AUTOMATION",
+    "format": "SCREEN_RECORD",
+    "length": "18 sec",
+    "energy": "Calm, casual — just showing them something",
+    "setup": "Behind desk at Orage HQ. Second screen visible (or full screen capture cuts in).",
+    "shotDirections": [
+      "Lead with full-screen Gemini inbox demo",
+      "Cut to you for the verbal payoff"
+    ],
+    "sections": [
+      {
+        "id": "s06-1",
+        "type": "VISUAL_HOOK",
+        "timecode": "0:00–0:05",
+        "action": "Full-screen capture: flooded Gmail inbox, 200+ unread. Watch as Gemini AI categorizes in real-time: 'Sales lead.' 'Vendor invoice.' 'Internal team.' 'Spam.' Bar count drops 200 → 80 → 30 → 12 in 5 sec.",
+        "spokenLines": [],
+        "completed": false
+      },
+      {
+        "id": "s06-2",
+        "type": "VERBAL_HOOK",
+        "timecode": "0:05–0:08",
+        "action": "Cut to you behind desk.",
+        "spokenLines": [
+          "That's a Tuesday morning, sorted before coffee."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s06-3",
+        "type": "BODY",
+        "timecode": "0:08–0:14",
+        "action": "Stay on you. Calm pace.",
+        "spokenLines": [
+          "Most founders open their inbox and lose an hour to triage.",
+          "We let Gemini do that.",
+          "You only see what actually needs you."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s06-4",
+        "type": "CTA",
+        "timecode": "0:14–0:18",
+        "action": "Same shot.",
+        "spokenLines": [
+          "Free 45-minute audit. We'll find the next hour. Link below."
+        ],
+        "completed": false
+      }
+    ],
+    "status": "ready_to_shoot",
+    "notes": "",
+    "createdAt": "2026-05-05T00:00:00.000Z",
+    "updatedAt": "2026-05-05T00:00:00.000Z"
+  },
+  {
+    "id": "script-07",
+    "number": 7,
+    "source": "CLAUDE",
+    "title": "Stop Paying Canva",
+    "recommended": false,
+    "priorityRank": 7,
+    "wedge": "AUTOMATION",
+    "format": "SCREEN_RECORD",
+    "length": "18 sec",
+    "energy": "Slightly contrarian — better way reveal",
+    "setup": "Behind desk. Laptop with Nano Banana open and visible.",
+    "shotDirections": [
+      "Split-screen capture: Canva tab vs Nano Banana",
+      "Cut to you for verbal payoff"
+    ],
+    "sections": [
+      {
+        "id": "s07-1",
+        "type": "VISUAL_HOOK",
+        "timecode": "0:00–0:05",
+        "action": "Screen capture. Canva tab open with marketing graphic in progress. Then split-screen: same image being generated in Nano Banana in 3 seconds. Compare side by side. Time stamps visible.",
+        "spokenLines": [],
+        "completed": false
+      },
+      {
+        "id": "s07-2",
+        "type": "VERBAL_HOOK",
+        "timecode": "0:05–0:08",
+        "action": "Cut to you. Slight smirk.",
+        "spokenLines": [
+          "Same asset. One took 30 minutes. One took 3 seconds."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s07-3",
+        "type": "BODY",
+        "timecode": "0:08–0:14",
+        "action": "Direct to camera. Conversational.",
+        "spokenLines": [
+          "Your marketing team is paying for tools that AI replaced six months ago.",
+          "We swap them out.",
+          "Same output. Fraction of the time. Fraction of the cost."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s07-4",
+        "type": "CTA",
+        "timecode": "0:14–0:18",
+        "action": "Same shot.",
+        "spokenLines": [
+          "Free 45-minute audit. We'll audit your software stack. Link below."
+        ],
+        "completed": false
+      }
+    ],
+    "status": "ready_to_shoot",
+    "notes": "",
+    "createdAt": "2026-05-05T00:00:00.000Z",
+    "updatedAt": "2026-05-05T00:00:00.000Z"
+  },
+  {
+    "id": "script-08",
+    "number": 8,
+    "source": "GEORGE",
+    "title": "Founder's Day Offer",
+    "recommended": false,
+    "priorityRank": 8,
+    "wedge": "TEAM",
+    "format": "BEHIND_DESK",
+    "length": "18 sec",
+    "energy": "Direct, qualifier-driven",
+    "setup": "Behind desk. Direct to camera.",
+    "shotDirections": [
+      "Eye-level",
+      "Hold steady",
+      "Land each qualifier individually"
+    ],
+    "sections": [
+      {
+        "id": "s08-1",
+        "type": "VERBAL_HOOK",
+        "timecode": "0:00–0:05",
+        "action": "Direct to camera.",
+        "spokenLines": [
+          "You get a day back per week as a founder. Your team gets 40 hours back. Or you don't pay. In the Orage AI First 90."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s08-2",
+        "type": "BODY",
+        "timecode": "0:05–0:14",
+        "action": "Land each qualifier.",
+        "spokenLines": [
+          "If you're doing over three million dollars,",
+          "and you feel trapped inside your business,",
+          "with five or more people on your team,",
+          "and you want to increase their efficiency and output —",
+          "this is for you."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s08-3",
+        "type": "CTA",
+        "timecode": "0:14–0:18",
+        "action": "Direct to camera.",
+        "spokenLines": [
+          "Free 45-minute audit. Link below."
+        ],
+        "completed": false
+      }
+    ],
+    "status": "ready_to_shoot",
+    "notes": "",
+    "createdAt": "2026-05-05T00:00:00.000Z",
+    "updatedAt": "2026-05-05T00:00:00.000Z"
+  },
+  {
+    "id": "script-09",
+    "number": 9,
+    "source": "GEORGE",
+    "title": "From Anywhere",
+    "recommended": false,
+    "priorityRank": 9,
+    "wedge": "SCALE",
+    "format": "IRL_DEMO",
+    "length": "22 sec",
+    "energy": "Casual, confident — lifestyle proof",
+    "setup": "Outdoor or non-office location. Phone or laptop visible. You're working from anywhere.",
+    "shotDirections": [
+      "First shot: wide shot showing the location (you not at a desk)",
+      "Cut to medium of you talking",
+      "Show device (laptop or iPad) — actually doing AI work"
+    ],
+    "sections": [
+      {
+        "id": "s09-1",
+        "type": "VERBAL_HOOK",
+        "timecode": "0:00–0:05",
+        "action": "Wide shot of location. Then turn to camera.",
+        "spokenLines": [
+          "If it happens on a computer, AI can do it. And you can do it from anywhere."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s09-2",
+        "type": "BODY",
+        "timecode": "0:05–0:18",
+        "action": "Conversational delivery.",
+        "spokenLines": [
+          "My productivity isn't on the grind in front of the screen.",
+          "It's in the strategy. The face-to-face. The structure.",
+          "Once I realized AI does the work, everything changed.",
+          "I'm here. AI is working at home.",
+          "The shift isn't copy-and-paste. It's fully automated work."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s09-3",
+        "type": "CTA",
+        "timecode": "0:18–0:22",
+        "action": "Direct to camera.",
+        "spokenLines": [
+          "Free 45-minute audit. Link below."
+        ],
+        "completed": false
+      }
+    ],
+    "status": "ready_to_shoot",
+    "notes": "",
+    "createdAt": "2026-05-05T00:00:00.000Z",
+    "updatedAt": "2026-05-05T00:00:00.000Z"
+  },
+  {
+    "id": "script-10",
+    "number": 10,
+    "source": "GEORGE",
+    "title": "Welcome to My Team",
+    "recommended": false,
+    "priorityRank": 10,
+    "wedge": "TEAM",
+    "format": "BEHIND_DESK",
+    "length": "18 sec",
+    "energy": "Reframe energy — slight smile, knowing",
+    "setup": "Behind desk. Maybe a clean wall behind with role-name graphics overlaid.",
+    "shotDirections": [
+      "Eye-level",
+      "Use text overlays for 'MARKETER / CUSTOMER RELATIONS / DEVELOPER'"
+    ],
+    "sections": [
+      {
+        "id": "s10-1",
+        "type": "VERBAL_HOOK",
+        "timecode": "0:00–0:05",
+        "action": "Direct to camera.",
+        "spokenLines": [
+          "Welcome to my team. If your business has a computer — this could be your team too."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s10-2",
+        "type": "BODY",
+        "timecode": "0:05–0:14",
+        "action": "Text overlays appear as you say each role.",
+        "spokenLines": [
+          "Marketer. Customer Relations. Developer.",
+          "You let people build the structure.",
+          "AI does the work.",
+          "You maximize output without growing headcount."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s10-3",
+        "type": "CTA",
+        "timecode": "0:14–0:18",
+        "action": "Direct to camera.",
+        "spokenLines": [
+          "Free 45-minute audit. Link below."
+        ],
+        "completed": false
+      }
+    ],
+    "status": "ready_to_shoot",
+    "notes": "",
+    "createdAt": "2026-05-05T00:00:00.000Z",
+    "updatedAt": "2026-05-05T00:00:00.000Z"
+  },
+  {
+    "id": "script-11",
+    "number": 11,
+    "source": "CLAUDE",
+    "title": "The Team You Already Have",
+    "recommended": false,
+    "priorityRank": 11,
+    "wedge": "TEAM",
+    "format": "BEHIND_DESK",
+    "length": "20 sec",
+    "energy": "Direct, slightly punchy — contrarian",
+    "setup": "Standing at whiteboard or sitting at desk. Notepad with math visible.",
+    "shotDirections": [
+      "Lead with close-up on notepad",
+      "Pull back to show you"
+    ],
+    "sections": [
+      {
+        "id": "s11-1",
+        "type": "VISUAL_HOOK",
+        "timecode": "0:00–0:05",
+        "action": "Close-up on notepad. You write: '5 people × 8 hrs/wk on admin = 40 hrs = 1 full-time hire you're already paying for.' Tap the line with the pen.",
+        "spokenLines": [],
+        "completed": false
+      },
+      {
+        "id": "s11-2",
+        "type": "VERBAL_HOOK",
+        "timecode": "0:05–0:09",
+        "action": "Turn to camera. Pen in hand.",
+        "spokenLines": [
+          "That's the hire your team is doing for free."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s11-3",
+        "type": "BODY",
+        "timecode": "0:09–0:16",
+        "action": "Direct camera. List each one fast.",
+        "spokenLines": [
+          "Phones. Data entry. Follow-ups. Reports.",
+          "We don't replace your team — we give them their hours back.",
+          "Same headcount. Twice the output.",
+          "Without you adding a single salary."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s11-4",
+        "type": "CTA",
+        "timecode": "0:16–0:20",
+        "action": "Direct to camera.",
+        "spokenLines": [
+          "Free 45-minute audit. Link below."
+        ],
+        "completed": false
+      }
+    ],
+    "status": "ready_to_shoot",
+    "notes": "",
+    "createdAt": "2026-05-05T00:00:00.000Z",
+    "updatedAt": "2026-05-05T00:00:00.000Z"
+  },
+  {
+    "id": "script-12",
+    "number": 12,
+    "source": "CLAUDE",
+    "title": "The Founder's Day",
+    "recommended": false,
+    "priorityRank": 12,
+    "wedge": "TIME",
+    "format": "WALKING",
+    "length": "22 sec",
+    "energy": "Direct, confident, peer-to-peer",
+    "setup": "Walking through Orage HQ — or outdoor for variety. Movement adds energy.",
+    "shotDirections": [
+      "Phone gimbal recommended",
+      "Walking parallel to camera operator",
+      "Stop at 'None of them said...' for emphasis"
+    ],
+    "sections": [
+      {
+        "id": "s12-1",
+        "type": "VERBAL_HOOK",
+        "timecode": "0:00–0:04",
+        "action": "Walking toward camera. Direct.",
+        "spokenLines": [
+          "If I gave you a full day back every week — what would you actually do with it?"
+        ],
+        "completed": false
+      },
+      {
+        "id": "s12-2",
+        "type": "BODY",
+        "timecode": "0:04–0:10",
+        "action": "Still walking. Gesture as you list each quote. Slight pauses between them.",
+        "spokenLines": [
+          "Every founder I ask gets quiet for a second. Then they get specific.",
+          "'I'd close two more deals.'",
+          "'I'd be home for dinner.'",
+          "'I'd think about the next quarter instead of surviving it.'"
+        ],
+        "completed": false
+      },
+      {
+        "id": "s12-3",
+        "type": "BODY",
+        "timecode": "0:10–0:18",
+        "action": "Stop walking. Direct to camera.",
+        "spokenLines": [
+          "None of them said 'I'd do more data entry.'",
+          "That's the whole point.",
+          "We give you the day. You decide what's worth doing with it."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s12-4",
+        "type": "CTA",
+        "timecode": "0:18–0:22",
+        "action": "Direct to camera.",
+        "spokenLines": [
+          "Free 45-minute audit. Book it. Link below."
+        ],
+        "completed": false
+      }
+    ],
+    "status": "ready_to_shoot",
+    "notes": "",
+    "createdAt": "2026-05-05T00:00:00.000Z",
+    "updatedAt": "2026-05-05T00:00:00.000Z"
+  },
+  {
+    "id": "script-13",
+    "number": 13,
+    "source": "GEORGE",
+    "title": "Storm Watch",
+    "recommended": false,
+    "priorityRank": 13,
+    "wedge": "MARGIN_CLIFF",
+    "format": "SCREEN_RECORD",
+    "length": "30 sec",
+    "energy": "Theatrical — local OKC aesthetic",
+    "setup": "Open with storm-warning style graphic on screen. Use OKC weather aesthetic but DO NOT name David Payne or any real meteorologist (legal risk). Style only.",
+    "shotDirections": [
+      "Open with storm graphic (Canva or Nano Banana animated)",
+      "Cut to you in front of an OKC weather map",
+      "Hard cuts for urgency"
+    ],
+    "sections": [
+      {
+        "id": "s13-1",
+        "type": "VISUAL_HOOK",
+        "timecode": "0:00–0:05",
+        "action": "Storm warning graphic. 'AI Watch — Oklahoma City Metro.' Style only — no real names.",
+        "spokenLines": [],
+        "completed": false
+      },
+      {
+        "id": "s13-2",
+        "type": "BODY",
+        "timecode": "0:05–0:15",
+        "action": "Cut to you in front of weather-style map.",
+        "spokenLines": [
+          "Heavy storm coming from the north.",
+          "AI is going to hit Oklahoma City.",
+          "It's not baseball-size hail.",
+          "But your business will be totaled if you don't pay attention."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s13-3",
+        "type": "BODY",
+        "timecode": "0:15–0:25",
+        "action": "Stay tight. Build intensity.",
+        "spokenLines": [
+          "If your business already feels like a storm —",
+          "Trapped inside. Can't take your eyes off it.",
+          "Step outside and you're afraid the tornado takes the business, the home, the dog —",
+          "Use AI. Take the world by storm.",
+          "Don't let the storm take you."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s13-4",
+        "type": "CTA",
+        "timecode": "0:25–0:30",
+        "action": "Direct to camera.",
+        "spokenLines": [
+          "Click the link below. I'll see you soon."
+        ],
+        "completed": false
+      }
+    ],
+    "status": "ready_to_shoot",
+    "notes": "",
+    "createdAt": "2026-05-05T00:00:00.000Z",
+    "updatedAt": "2026-05-05T00:00:00.000Z"
+  },
+  {
+    "id": "script-14",
+    "number": 14,
+    "source": "GEORGE",
+    "title": "IRL Example: Onboarding",
+    "recommended": false,
+    "priorityRank": 14,
+    "wedge": "AUTOMATION",
+    "format": "IRL_DEMO",
+    "length": "18 sec",
+    "energy": "Casual, demonstrative — proof by doing",
+    "setup": "At home. iPad or laptop open. You're literally giving instructions to AI on camera.",
+    "shotDirections": [
+      "Wide shot of you in your home setting",
+      "Insert close-up of the AI receiving the prompt",
+      "Cut to you for the verbal payoff"
+    ],
+    "sections": [
+      {
+        "id": "s14-1",
+        "type": "VISUAL_HOOK",
+        "timecode": "0:00–0:08",
+        "action": "Show you at home. Speaking commands to AI.",
+        "spokenLines": [
+          "Hey, I need you to onboard affiliate X.",
+          "And schedule an appointment for tomorrow at 10 AM with Brooklyn —",
+          "to make sure the landing page is ready to receive traffic.",
+          "Let me know once it's done."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s14-2",
+        "type": "VERBAL_HOOK",
+        "timecode": "0:08–0:12",
+        "action": "Turn to camera.",
+        "spokenLines": [
+          "If you have processes you or your team repeat — and they're draining your focus — click the link."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s14-3",
+        "type": "BODY",
+        "timecode": "0:12–0:16",
+        "action": "Direct to camera.",
+        "spokenLines": [
+          "Use your time for what moves the needle.",
+          "Automate the rest."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s14-4",
+        "type": "CTA",
+        "timecode": "0:16–0:18",
+        "action": "Direct to camera.",
+        "spokenLines": [
+          "Click the link below. See how it works for your business."
+        ],
+        "completed": false
+      }
+    ],
+    "status": "ready_to_shoot",
+    "notes": "",
+    "createdAt": "2026-05-05T00:00:00.000Z",
+    "updatedAt": "2026-05-05T00:00:00.000Z"
+  },
+  {
+    "id": "script-15",
+    "number": 15,
+    "source": "GEORGE",
+    "title": "IRL Example: Pool",
+    "recommended": false,
+    "priorityRank": 15,
+    "wedge": "SCALE",
+    "format": "IRL_DEMO",
+    "length": "12 sec",
+    "energy": "Ultra-casual — peak lifestyle proof",
+    "setup": "At Lifetime pool. iPhone or iPad in hand. You're literally giving AI a command from a lounge chair.",
+    "shotDirections": [
+      "Establishing shot of pool setting",
+      "Close-up of you talking to AI on device",
+      "End on a smile to camera"
+    ],
+    "sections": [
+      {
+        "id": "s15-1",
+        "type": "VISUAL_HOOK",
+        "timecode": "0:00–0:05",
+        "action": "Wide shot at pool. Looking at device.",
+        "spokenLines": [
+          "Generate the carousel post based on the script."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s15-2",
+        "type": "VERBAL_HOOK",
+        "timecode": "0:05–0:08",
+        "action": "Turn to camera. Slight smile.",
+        "spokenLines": [
+          "This is what AI lets you do."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s15-3",
+        "type": "BODY",
+        "timecode": "0:08–0:11",
+        "action": "Casual.",
+        "spokenLines": [
+          "I'm not at a desk.",
+          "The work still got done."
+        ],
+        "completed": false
+      },
+      {
+        "id": "s15-4",
+        "type": "CTA",
+        "timecode": "0:11–0:12",
+        "action": "Smile to camera.",
+        "spokenLines": [
+          "Link below."
+        ],
+        "completed": false
+      }
+    ],
+    "status": "ready_to_shoot",
+    "notes": "",
+    "createdAt": "2026-05-05T00:00:00.000Z",
+    "updatedAt": "2026-05-05T00:00:00.000Z"
+  }
+]
