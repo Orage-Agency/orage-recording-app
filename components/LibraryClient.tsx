@@ -7,6 +7,7 @@ import ScriptCard from './ScriptCard';
 import NextUpHero from './NextUpHero';
 import QueueStrip from './QueueStrip';
 import StatsBar from './StatsBar';
+import NewScriptModal from './NewScriptModal';
 
 const RECORDED_STATUSES: Status[] = ['recorded', 'edited', 'live', 'winner'];
 const isRecorded = (s: Script) => RECORDED_STATUSES.includes(s.status);
@@ -14,6 +15,7 @@ const isRecorded = (s: Script) => RECORDED_STATUSES.includes(s.status);
 export default function LibraryClient({ scripts }: { scripts: Script[] }) {
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
   const [showAll, setShowAll] = useState(true);
+  const [newScript, setNewScript] = useState(false);
 
   const ranked = useMemo(
     () => [...scripts].sort((a, b) => a.priorityRank - b.priorityRank),
@@ -41,16 +43,31 @@ export default function LibraryClient({ scripts }: { scripts: Script[] }) {
 
   return (
     <main className="max-w-[1400px] mx-auto px-4 sm:px-8 py-8 space-y-10">
-      <section className="animate-rise">
-        <StatsBar
-          stats={[
-            { label: 'Scripts', value: scripts.length },
-            { label: 'Priority', value: priorityCount, accent: true, hint: '★' },
-            { label: 'Recorded', value: `${recordedCount}/${scripts.length}` },
-            { label: 'Winners', value: winnerCount },
-          ]}
-        />
+      <section className="animate-rise flex items-center justify-between gap-4">
+        <div className="flex-1 min-w-0">
+          <StatsBar
+            stats={[
+              { label: 'Scripts', value: scripts.length },
+              { label: 'Priority', value: priorityCount, accent: true, hint: '★' },
+              { label: 'Recorded', value: `${recordedCount}/${scripts.length}` },
+              { label: 'Winners', value: winnerCount },
+            ]}
+          />
+        </div>
+        <button
+          onClick={() => setNewScript(true)}
+          className="hidden sm:inline-flex items-center gap-2 font-display text-sm tracking-[0.25em] bg-gold text-black hover:bg-gold-high px-5 py-3 rounded-sm min-touch shrink-0 self-stretch transition-colors"
+        >
+          + New Script
+        </button>
       </section>
+
+      <button
+        onClick={() => setNewScript(true)}
+        className="sm:hidden font-display text-sm tracking-[0.25em] bg-gold text-black hover:bg-gold-high px-5 py-3 rounded-sm min-touch w-full transition-colors animate-rise"
+      >
+        + New Script
+      </button>
 
       <section className="animate-rise-delay-1">
         <NextUpHero script={onDeck} />
@@ -102,6 +119,8 @@ export default function LibraryClient({ scripts }: { scripts: Script[] }) {
           </>
         )}
       </section>
+
+      <NewScriptModal open={newScript} onClose={() => setNewScript(false)} />
     </main>
   );
 }

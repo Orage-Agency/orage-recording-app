@@ -9,6 +9,7 @@ const HOOKS_FILE = path.join(DATA_DIR, 'hooks.json');
 const PREHOOKS_FILE = path.join(DATA_DIR, 'preHooks.json');
 
 const SCRIPTS_PREFIX = 'scripts/';
+const HOOKS_PREFIX = 'hooks/';
 
 const hasBlob = () => Boolean(process.env.BLOB_READ_WRITE_TOKEN);
 
@@ -27,8 +28,8 @@ interface BlobEntry {
   uploadedAt: Date;
 }
 
-async function listScriptBlobs(): Promise<BlobEntry[]> {
-  const { blobs } = await list({ prefix: SCRIPTS_PREFIX });
+async function listBlobsAtPrefix(prefix: string): Promise<BlobEntry[]> {
+  const { blobs } = await list({ prefix });
   return blobs.map((b) => ({
     url: b.url,
     pathname: b.pathname,
@@ -36,35 +37,30 @@ async function listScriptBlobs(): Promise<BlobEntry[]> {
   }));
 }
 
-async function readScriptsFromBlob(): Promise<Script[] | null> {
+async function readJsonFromBlob<T>(prefix: string): Promise<T | null> {
   try {
-    const blobs = await listScriptBlobs();
+    const blobs = await listBlobsAtPrefix(prefix);
     if (blobs.length === 0) return null;
     blobs.sort((a, b) => b.uploadedAt.getTime() - a.uploadedAt.getTime());
     const latest = blobs[0];
     const res = await fetch(latest.url, { cache: 'no-store' });
     if (!res.ok) return null;
-    return (await res.json()) as Script[];
+    return (await res.json()) as T;
   } catch {
     return null;
   }
 }
 
-async function writeScriptsToBlob(scripts: Script[]): Promise<void> {
-  // Capture existing versions so we can remove them after a successful write
-  const existing = await listScriptBlobs().catch(() => [] as BlobEntry[]);
-
-  // New versioned write — random suffix means a fresh URL, no CDN staleness
+async function writeJsonToBlob<T>(prefix: string, basename: string, data: T): Promise<void> {
+  const existing = await listBlobsAtPrefix(prefix).catch(() => [] as BlobEntry[]);
   const ts = new Date().toISOString().replace(/[:.]/g, '-');
-  const filename = `${SCRIPTS_PREFIX}scripts-${ts}.json`;
-  await put(filename, JSON.stringify(scripts, null, 2), {
+  const filename = `${prefix}${basename}-${ts}.json`;
+  await put(filename, JSON.stringify(data, null, 2), {
     access: 'public',
     contentType: 'application/json',
     addRandomSuffix: true,
     cacheControlMaxAge: 0,
   });
-
-  // Best-effort cleanup of the previous versions
   if (existing.length > 0) {
     try {
       await del(existing.map((b) => b.url));
@@ -74,20 +70,27 @@ async function writeScriptsToBlob(scripts: Script[]): Promise<void> {
   }
 }
 
-async function ensureSeeded(): Promise<Script[]> {
-  if (!hasBlob()) {
-    return readSeed<Script[]>(SCRIPTS_FILE);
-  }
-  const fromBlob = await readScriptsFromBlob();
+// ───────────────────── SCRIPTS ─────────────────────
+
+async function ensureScriptsSeeded(): Promise<Script[]> {
+  if (!hasBlob()) return readSeed<Script[]>(SCRIPTS_FILE);
+  const fromBlob = await readJsonFromBlob<Script[]>(SCRIPTS_PREFIX);
   if (fromBlob) return fromBlob;
-  // First run — seed blob from bundled JSON.
   const seed = await readSeed<Script[]>(SCRIPTS_FILE);
-  await writeScriptsToBlob(seed);
+  await writeJsonToBlob(SCRIPTS_PREFIX, 'scripts', seed);
   return seed;
 }
 
+async function persistScripts(scripts: Script[]): Promise<void> {
+  if (hasBlob()) {
+    await writeJsonToBlob(SCRIPTS_PREFIX, 'scripts', scripts);
+  } else {
+    await writeFileFallback(SCRIPTS_FILE, scripts);
+  }
+}
+
 export async function getScripts(): Promise<Script[]> {
-  return ensureSeeded();
+  return ensureScriptsSeeded();
 }
 
 export async function getScript(id: string): Promise<Script | null> {
@@ -109,22 +112,14 @@ export async function updateScript(
     updatedAt: new Date().toISOString(),
   };
   all[idx] = updated;
-  if (hasBlob()) {
-    await writeScriptsToBlob(all);
-  } else {
-    await writeFileFallback(SCRIPTS_FILE, all);
-  }
+  await persistScripts(all);
   return updated;
 }
 
 export async function createScript(script: Script): Promise<Script> {
   const all = await getScripts();
   all.push(script);
-  if (hasBlob()) {
-    await writeScriptsToBlob(all);
-  } else {
-    await writeFileFallback(SCRIPTS_FILE, all);
-  }
+  await persistScripts(all);
   return script;
 }
 
@@ -132,20 +127,8 @@ export async function deleteScript(id: string): Promise<boolean> {
   const all = await getScripts();
   const next = all.filter((s) => s.id !== id);
   if (next.length === all.length) return false;
-  if (hasBlob()) {
-    await writeScriptsToBlob(next);
-  } else {
-    await writeFileFallback(SCRIPTS_FILE, next);
-  }
+  await persistScripts(next);
   return true;
-}
-
-export async function getHooks(): Promise<VerbalHook[]> {
-  return readSeed<VerbalHook[]>(HOOKS_FILE);
-}
-
-export async function getPreHooks(): Promise<PreHook[]> {
-  return readSeed<PreHook[]>(PREHOOKS_FILE);
 }
 
 export async function getNextScriptId(currentId: string): Promise<string | null> {
@@ -156,12 +139,65 @@ export async function getNextScriptId(currentId: string): Promise<string | null>
   return sorted[idx + 1].id;
 }
 
+// ───────────────────── HOOKS ─────────────────────
+
+async function ensureHooksSeeded(): Promise<VerbalHook[]> {
+  if (!hasBlob()) return readSeed<VerbalHook[]>(HOOKS_FILE);
+  const fromBlob = await readJsonFromBlob<VerbalHook[]>(HOOKS_PREFIX);
+  if (fromBlob) return fromBlob;
+  const seed = await readSeed<VerbalHook[]>(HOOKS_FILE);
+  await writeJsonToBlob(HOOKS_PREFIX, 'hooks', seed);
+  return seed;
+}
+
+async function persistHooks(hooks: VerbalHook[]): Promise<void> {
+  if (hasBlob()) {
+    await writeJsonToBlob(HOOKS_PREFIX, 'hooks', hooks);
+  } else {
+    await writeFileFallback(HOOKS_FILE, hooks);
+  }
+}
+
+export async function getHooks(): Promise<VerbalHook[]> {
+  return ensureHooksSeeded();
+}
+
+export async function createHook(hook: VerbalHook): Promise<VerbalHook> {
+  const all = await getHooks();
+  all.push(hook);
+  await persistHooks(all);
+  return hook;
+}
+
+export async function updateHook(
+  id: string,
+  patch: Partial<VerbalHook>
+): Promise<VerbalHook | null> {
+  const all = await getHooks();
+  const idx = all.findIndex((h) => h.id === id);
+  if (idx === -1) return null;
+  const updated: VerbalHook = { ...all[idx], ...patch, id: all[idx].id };
+  all[idx] = updated;
+  await persistHooks(all);
+  return updated;
+}
+
+export async function deleteHook(id: string): Promise<boolean> {
+  const all = await getHooks();
+  const next = all.filter((h) => h.id !== id);
+  if (next.length === all.length) return false;
+  await persistHooks(next);
+  return true;
+}
+
+// ───────────────────── PRE-HOOKS (seed-only for now) ─────────────────────
+
+export async function getPreHooks(): Promise<PreHook[]> {
+  return readSeed<PreHook[]>(PREHOOKS_FILE);
+}
+
 export async function resetScripts(): Promise<Script[]> {
   const seed = await readSeed<Script[]>(SCRIPTS_FILE);
-  if (hasBlob()) {
-    await writeScriptsToBlob(seed);
-  } else {
-    await writeFileFallback(SCRIPTS_FILE, seed);
-  }
+  await persistScripts(seed);
   return seed;
 }

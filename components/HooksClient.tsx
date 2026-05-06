@@ -1,8 +1,11 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import type { VerbalHook, HookFormula, Wedge } from '@/lib/types';
 import { ALL_FORMULAS, ALL_WEDGES, FORMULA_LABEL, WEDGE_LABEL } from '@/lib/constants';
+import Modal from './Modal';
+import HookComposer from './HookComposer';
 
 const FORMULA_ACCENT: Record<HookFormula, string> = {
   SPECIFIC_NUMBER: '#10B981',
@@ -12,10 +15,13 @@ const FORMULA_ACCENT: Record<HookFormula, string> = {
   POV_AUTHORITY: '#A78BFA',
 };
 
-export default function HooksClient({ hooks }: { hooks: VerbalHook[] }) {
+export default function HooksClient({ hooks: initialHooks }: { hooks: VerbalHook[] }) {
+  const router = useRouter();
+  const [hooks, setHooks] = useState<VerbalHook[]>(initialHooks);
   const [formula, setFormula] = useState<HookFormula | 'all'>('all');
   const [wedge, setWedge] = useState<Wedge | 'all'>('all');
   const [copied, setCopied] = useState<string | null>(null);
+  const [composing, setComposing] = useState(false);
 
   const filtered = useMemo(() => {
     return hooks
@@ -31,6 +37,23 @@ export default function HooksClient({ hooks }: { hooks: VerbalHook[] }) {
     } catch {
       /* ignore */
     }
+  };
+
+  const submitNew = async (data: {
+    text: string;
+    formula: HookFormula;
+    pairsWithWedges: Wedge[];
+  }) => {
+    const res = await fetch('/api/hooks', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) return;
+    const created: VerbalHook = await res.json();
+    setHooks((curr) => [created, ...curr]);
+    setComposing(false);
+    router.refresh();
   };
 
   return (
@@ -50,9 +73,17 @@ export default function HooksClient({ hooks }: { hooks: VerbalHook[] }) {
             ))}
           </Selector>
 
-          <div className="ml-auto font-display text-[11px] tracking-[0.25em] text-cream/60">
-            <span className="text-gold-high">{filtered.length}</span>
-            <span className="text-cream/40"> / {hooks.length}</span>
+          <div className="ml-auto flex items-center gap-3">
+            <div className="font-display text-[11px] tracking-[0.25em] text-cream/60">
+              <span className="text-gold-high">{filtered.length}</span>
+              <span className="text-cream/40"> / {hooks.length}</span>
+            </div>
+            <button
+              onClick={() => setComposing(true)}
+              className="font-display text-[11px] tracking-[0.25em] bg-gold text-black hover:bg-gold-high px-4 py-2 rounded-sm min-touch transition-colors"
+            >
+              + New Hook
+            </button>
           </div>
         </div>
       </div>
@@ -95,6 +126,20 @@ export default function HooksClient({ hooks }: { hooks: VerbalHook[] }) {
           );
         })}
       </main>
+
+      <Modal
+        open={composing}
+        onClose={() => setComposing(false)}
+        eyebrow="New hook"
+        title="What did you just hear in your head?"
+        size="md"
+      >
+        <HookComposer
+          onSubmit={submitNew}
+          onCancel={() => setComposing(false)}
+          submitLabel="Save hook"
+        />
+      </Modal>
     </>
   );
 }

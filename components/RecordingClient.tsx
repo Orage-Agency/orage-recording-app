@@ -9,21 +9,24 @@ import SectionBlock, { newSection } from './SectionBlock';
 import ShotDirectionsPanel from './ShotDirectionsPanel';
 import FocusOverlay from './FocusOverlay';
 import UndoToast, { type UndoToastModel } from './UndoToast';
+import CaptureSheet from './CaptureSheet';
 
 type SaveState = 'idle' | 'saving' | 'saved' | 'error';
 
 interface Props {
   initial: Script;
   nextScriptId: string | null;
+  initialMode?: 'READ' | 'EDIT';
 }
 
-export default function RecordingClient({ initial, nextScriptId }: Props) {
+export default function RecordingClient({ initial, nextScriptId, initialMode = 'READ' }: Props) {
   const router = useRouter();
   const [script, setScript] = useState<Script>(initial);
-  const [mode, setMode] = useState<'READ' | 'EDIT'>('READ');
+  const [mode, setMode] = useState<'READ' | 'EDIT'>(initialMode);
   const [focus, setFocus] = useState(false);
   const [save, setSave] = useState<SaveState>('idle');
   const [recordedHighlight, setRecordedHighlight] = useState(false);
+  const [capturing, setCapturing] = useState(false);
 
   const [undoToast, setUndoToast] = useState<UndoToastModel | null>(null);
   const advanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -464,6 +467,22 @@ export default function RecordingClient({ initial, nextScriptId }: Props) {
         </div>
       </div>
 
+      {!focus && (
+        <button
+          onClick={() => setCapturing(true)}
+          className="fixed bottom-24 right-4 sm:right-6 z-30 group flex items-center gap-2 bg-ink-2 border border-[color:var(--border)] hover:border-gold hover:bg-ink-3 rounded-sm px-4 py-3 shadow-2xl transition-all min-touch"
+          aria-label="Capture an idea"
+          title="Capture an idea"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-gold">
+            <path d="M12 5v14m-7-7h14" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+          </svg>
+          <span className="font-display text-[11px] tracking-[0.3em] text-cream-soft group-hover:text-gold-high">
+            Capture
+          </span>
+        </button>
+      )}
+
       {focus && (
         <FocusOverlay
           script={script}
@@ -472,6 +491,24 @@ export default function RecordingClient({ initial, nextScriptId }: Props) {
           onExit={() => setFocus(false)}
         />
       )}
+
+      <CaptureSheet
+        open={capturing}
+        onClose={() => setCapturing(false)}
+        scriptId={script.id}
+        scriptTitle={script.title}
+        currentNotes={script.notes ?? ''}
+        onNoteAppended={(notes) => setScript((curr) => ({ ...curr, notes }))}
+        onHookCreated={() => {
+          setUndoToast({
+            id: `t-${Date.now()}`,
+            message: '✓ Hook added',
+            durationMs: 1800,
+            onUndo: dismissUndo,
+            onExpire: dismissUndo,
+          });
+        }}
+      />
 
       <UndoToast toast={undoToast} />
     </>
