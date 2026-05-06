@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import { put, list } from '@vercel/blob';
+import { put, list, del } from '@vercel/blob';
 import type { Script, VerbalHook, PreHook } from './types';
 
 const DATA_DIR = path.join(process.cwd(), 'data');
@@ -8,7 +8,7 @@ const SCRIPTS_FILE = path.join(DATA_DIR, 'scripts.json');
 const HOOKS_FILE = path.join(DATA_DIR, 'hooks.json');
 const PREHOOKS_FILE = path.join(DATA_DIR, 'preHooks.json');
 
-const SCRIPTS_BLOB_KEY = 'scripts.json';
+const SCRIPTS_PREFIX = 'scripts/';
 
 const hasBlob = () => Boolean(process.env.BLOB_READ_WRITE_TOKEN);
 
@@ -21,13 +21,28 @@ async function writeFileFallback<T>(file: string, data: T): Promise<void> {
   await fs.writeFile(file, JSON.stringify(data, null, 2), 'utf8');
 }
 
+interface BlobEntry {
+  url: string;
+  pathname: string;
+  uploadedAt: Date;
+}
+
+async function listScriptBlobs(): Promise<BlobEntry[]> {
+  const { blobs } = await list({ prefix: SCRIPTS_PREFIX });
+  return blobs.map((b) => ({
+    url: b.url,
+    pathname: b.pathname,
+    uploadedAt: new Date(b.uploadedAt),
+  }));
+}
+
 async function readScriptsFromBlob(): Promise<Script[] | null> {
   try {
-    const { blobs } = await list({ prefix: SCRIPTS_BLOB_KEY, limit: 1 });
-    const found = blobs.find((b) => b.pathname === SCRIPTS_BLOB_KEY);
-    if (!found) return null;
-    // Append cache-buster so any CDN edge serves the freshest version after writes
-    const res = await fetch(`${found.url}?v=${Date.now()}`, { cache: 'no-store' });
+    const blobs = await listScriptBlobs();
+    if (blobs.length === 0) return null;
+    blobs.sort((a, b) => b.uploadedAt.getTime() - a.uploadedAt.getTime());
+    const latest = blobs[0];
+    const res = await fetch(latest.url, { cache: 'no-store' });
     if (!res.ok) return null;
     return (await res.json()) as Script[];
   } catch {
@@ -36,13 +51,27 @@ async function readScriptsFromBlob(): Promise<Script[] | null> {
 }
 
 async function writeScriptsToBlob(scripts: Script[]): Promise<void> {
-  await put(SCRIPTS_BLOB_KEY, JSON.stringify(scripts, null, 2), {
+  // Capture existing versions so we can remove them after a successful write
+  const existing = await listScriptBlobs().catch(() => [] as BlobEntry[]);
+
+  // New versioned write — random suffix means a fresh URL, no CDN staleness
+  const ts = new Date().toISOString().replace(/[:.]/g, '-');
+  const filename = `${SCRIPTS_PREFIX}scripts-${ts}.json`;
+  await put(filename, JSON.stringify(scripts, null, 2), {
     access: 'public',
     contentType: 'application/json',
-    addRandomSuffix: false,
-    allowOverwrite: true,
+    addRandomSuffix: true,
     cacheControlMaxAge: 0,
   });
+
+  // Best-effort cleanup of the previous versions
+  if (existing.length > 0) {
+    try {
+      await del(existing.map((b) => b.url));
+    } catch {
+      /* non-fatal */
+    }
+  }
 }
 
 async function ensureSeeded(): Promise<Script[]> {
@@ -127,7 +156,6 @@ export async function getNextScriptId(currentId: string): Promise<string | null>
   return sorted[idx + 1].id;
 }
 
-// Reset blob to seed (for debugging / re-seeding)
 export async function resetScripts(): Promise<Script[]> {
   const seed = await readSeed<Script[]>(SCRIPTS_FILE);
   if (hasBlob()) {
@@ -137,4 +165,3 @@ export async function resetScripts(): Promise<Script[]> {
   }
   return seed;
 }
-
