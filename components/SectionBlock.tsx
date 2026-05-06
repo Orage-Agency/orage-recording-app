@@ -18,18 +18,16 @@ export default function SectionBlock({ section, mode, onChange, onCommit, onRemo
 
   return (
     <section
-      className={`rounded-2xl border-2 bg-white transition-all ${
-        dimmed ? 'opacity-50' : ''
-      }`}
-      style={{ borderColor: color }}
+      className={`rounded-sm bg-ink-2 border-l-4 transition-all ${dimmed ? 'opacity-40' : ''}`}
+      style={{ borderLeftColor: color }}
     >
-      <header
-        className="flex items-center justify-between px-5 py-3 rounded-t-xl text-white"
-        style={{ backgroundColor: color }}
-      >
+      <header className="flex items-center justify-between px-5 py-3 border-b border-[color:var(--border-subtle)]">
         <div className="flex items-center gap-3 min-w-0">
-          <span className="font-bold text-sm tracking-widest uppercase">
-            {SECTION_LABEL[section.type]}
+          <span
+            className="font-display text-xs tracking-[0.3em]"
+            style={{ color }}
+          >
+            {SECTION_LABEL[section.type].toUpperCase()}
           </span>
           {mode === 'EDIT' ? (
             <input
@@ -37,11 +35,11 @@ export default function SectionBlock({ section, mode, onChange, onCommit, onRemo
               value={section.timecode}
               onChange={(e) => onChange({ ...section, timecode: e.target.value })}
               onBlur={onCommit}
-              className="bg-white/20 placeholder-white/60 px-2 py-1 rounded text-xs font-mono w-32 outline-none focus:bg-white/30"
+              className="bg-black/30 border border-[color:var(--border-subtle)] focus:border-gold rounded-sm px-2 py-1 text-xs font-mono w-28 outline-none text-cream-soft"
               placeholder="0:00–0:04"
             />
           ) : (
-            <span className="text-xs font-mono opacity-80">{section.timecode}</span>
+            <span className="text-xs font-mono text-cream/50">{section.timecode}</span>
           )}
         </div>
 
@@ -49,7 +47,7 @@ export default function SectionBlock({ section, mode, onChange, onCommit, onRemo
           {mode === 'EDIT' && (
             <button
               onClick={onRemove}
-              className="px-2 py-1 rounded text-xs bg-white/20 hover:bg-white/30 min-touch"
+              className="px-2 py-1 rounded-sm text-xs bg-black/30 border border-[color:var(--border-subtle)] hover:border-red-500/50 text-cream/70 min-touch"
               aria-label="Remove section"
             >
               −
@@ -61,16 +59,18 @@ export default function SectionBlock({ section, mode, onChange, onCommit, onRemo
               onChange({ ...section, completed: !section.completed });
               onCommit();
             }}
-            className="w-10 h-10 rounded-lg bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
+            className="w-11 h-11 rounded-sm flex items-center justify-center transition-colors"
+            style={{
+              backgroundColor: section.completed ? color : 'transparent',
+              border: `1.5px solid ${color}`,
+            }}
             aria-label={section.completed ? 'Mark incomplete' : 'Mark complete'}
           >
             {section.completed ? (
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                 <path d="M5 12.5L9.5 17L19 7" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-            ) : (
-              <span className="w-5 h-5 rounded-md border-2 border-white/80" />
-            )}
+            ) : null}
           </button>
         </div>
       </header>
@@ -79,23 +79,19 @@ export default function SectionBlock({ section, mode, onChange, onCommit, onRemo
         {mode === 'EDIT' ? (
           <>
             <div>
-              <div className="text-[10px] uppercase tracking-wider text-orage-muted font-semibold mb-1">
-                Action / direction
-              </div>
+              <div className="eyebrow mb-2">Action / direction</div>
               <AutoTextarea
                 value={section.action ?? ''}
                 onChange={(v) => onChange({ ...section, action: v })}
                 onBlur={onCommit}
                 placeholder="What's happening visually..."
                 italic
-                className="text-base text-orage-muted"
+                className="text-base text-cream/60"
               />
             </div>
 
             <div>
-              <div className="text-[10px] uppercase tracking-wider text-orage-muted font-semibold mb-1">
-                Spoken lines
-              </div>
+              <div className="eyebrow mb-2">Spoken lines</div>
               <div className="space-y-2">
                 {section.spokenLines.map((line, i) => (
                   <div key={i} className="flex items-start gap-2">
@@ -108,7 +104,7 @@ export default function SectionBlock({ section, mode, onChange, onCommit, onRemo
                       }}
                       onBlur={onCommit}
                       placeholder="Spoken line..."
-                      className="text-lg font-semibold text-orage-text"
+                      className="text-lg font-medium text-cream-soft"
                     />
                     <button
                       onClick={() => {
@@ -116,7 +112,7 @@ export default function SectionBlock({ section, mode, onChange, onCommit, onRemo
                         onChange({ ...section, spokenLines: next });
                         onCommit();
                       }}
-                      className="text-red-500 text-lg shrink-0 px-2 min-touch"
+                      className="text-cream/50 hover:text-red-400 text-lg shrink-0 px-2 min-touch"
                       aria-label="Remove line"
                     >
                       −
@@ -128,7 +124,7 @@ export default function SectionBlock({ section, mode, onChange, onCommit, onRemo
                     onChange({ ...section, spokenLines: [...section.spokenLines, ''] });
                     onCommit();
                   }}
-                  className="text-sm text-orage-accent font-semibold"
+                  className="font-display text-[11px] tracking-[0.25em] text-gold hover:text-gold-high mt-2"
                 >
                   + Add line
                 </button>
@@ -138,7 +134,7 @@ export default function SectionBlock({ section, mode, onChange, onCommit, onRemo
         ) : (
           <>
             {section.action && (
-              <p className="text-base sm:text-lg italic text-orage-muted leading-relaxed">
+              <p className="text-base sm:text-lg italic text-cream/60 leading-relaxed font-light">
                 {section.action}
               </p>
             )}
@@ -147,8 +143,7 @@ export default function SectionBlock({ section, mode, onChange, onCommit, onRemo
                 {section.spokenLines.map((line, i) => (
                   <p
                     key={i}
-                    className="text-2xl sm:text-3xl font-semibold leading-snug text-balance"
-                    style={{ color: 'var(--orage-text)' }}
+                    className="text-2xl sm:text-3xl font-medium leading-snug text-cream-soft text-balance"
                   >
                     {line}
                   </p>
@@ -156,7 +151,7 @@ export default function SectionBlock({ section, mode, onChange, onCommit, onRemo
               </div>
             )}
             {section.spokenLines.length === 0 && !section.action && (
-              <p className="text-orage-muted italic">Empty section.</p>
+              <p className="text-cream/40 italic">Empty section.</p>
             )}
           </>
         )}

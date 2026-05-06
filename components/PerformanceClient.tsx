@@ -35,64 +35,65 @@ export default function PerformanceClient({ initial }: { initial: Script[] }) {
 
   return (
     <>
-      <div className="bg-white border-b border-orage-border">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center gap-2">
-          <label className="flex items-center gap-2 bg-slate-50 border border-orage-border rounded-lg px-3 py-2 min-touch text-sm">
-            <span className="text-xs uppercase tracking-wider text-orage-muted font-semibold">
-              Status
-            </span>
+      <div className="bg-ink-1 border-b border-[color:var(--border-subtle)]">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 py-3 flex flex-wrap items-center gap-2">
+          <label className="flex items-center gap-2.5 bg-ink-2 border border-[color:var(--border-subtle)] rounded-sm px-3 py-2 min-touch text-sm">
+            <span className="font-display text-[10px] tracking-[0.25em] text-gold">Status</span>
             <select
               value={filter}
               onChange={(e) => setFilter(e.target.value as Status | 'all')}
-              className="bg-transparent font-medium outline-none cursor-pointer"
+              className="bg-transparent text-cream-soft font-medium outline-none cursor-pointer"
             >
               {STATUS_FILTERS.map((s) => (
-                <option key={s} value={s}>
+                <option key={s} value={s} className="bg-ink-2">
                   {s === 'all' ? 'All' : STATUS_LABEL[s]}
                 </option>
               ))}
             </select>
           </label>
 
-          <div className="ml-auto text-sm text-orage-muted">
-            Showing <span className="font-bold text-orage-text">{visible.length}</span> scripts
+          <div className="ml-auto font-display text-[11px] tracking-[0.25em] text-cream/60">
+            <span className="text-gold-high">{visible.length}</span> scripts
           </div>
         </div>
       </div>
 
-      <main className="max-w-[1600px] mx-auto px-4 sm:px-6 py-6">
-        <div className="bg-white rounded-2xl border border-orage-border overflow-hidden">
+      <main className="max-w-[1600px] mx-auto px-4 sm:px-8 py-8">
+        <div className="bg-ink-2 rounded-sm border border-[color:var(--border-subtle)] overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-slate-50 border-b border-orage-border">
-                <tr className="text-left text-[11px] uppercase tracking-wider text-orage-muted font-semibold">
-                  <th className="px-4 py-3">#</th>
-                  <th className="px-4 py-3">Title</th>
-                  <th className="px-4 py-3">Status</th>
-                  <th className="px-4 py-3">Format</th>
-                  <th className="px-4 py-3">Wedge</th>
-                  <th className="px-4 py-3 text-right">Hook %</th>
-                  <th className="px-4 py-3 text-right">CTR %</th>
-                  <th className="px-4 py-3 text-right">CPL $</th>
-                  <th className="px-4 py-3">Notes</th>
+              <thead className="bg-ink-1 border-b border-[color:var(--border-subtle)]">
+                <tr className="text-left">
+                  <Th>#</Th>
+                  <Th>Title</Th>
+                  <Th>Status</Th>
+                  <Th>Format</Th>
+                  <Th>Wedge</Th>
+                  <Th align="right">Hook %</Th>
+                  <Th align="right">CTR %</Th>
+                  <Th align="right">CPL $</Th>
+                  <Th>Notes</Th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-orage-border">
+              <tbody className="divide-y divide-[color:var(--border-subtle)]">
                 {visible.map((s) => (
-                  <tr key={s.id} className="hover:bg-slate-50">
-                    <td className="px-4 py-3 font-mono text-xs text-orage-muted">
+                  <tr key={s.id} className="hover:bg-black/30">
+                    <td className="px-4 py-3 font-mono text-xs text-cream/50">
                       {String(s.number).padStart(2, '0')}
                     </td>
                     <td className="px-4 py-3 max-w-xs">
-                      <Link href={`/script/${s.id}`} className="font-semibold hover:underline truncate block">
+                      <Link
+                        href={`/script/${s.id}`}
+                        className="font-display tracking-[0.05em] text-cream-soft hover:text-gold-high truncate block"
+                      >
                         {s.title}
                       </Link>
                     </td>
                     <td className="px-4 py-3">
                       <StatusPill status={s.status} />
                     </td>
-                    <td className="px-4 py-3 text-xs">{FORMAT_LABEL[s.format]}</td>
-                    <td className="px-4 py-3 text-xs">{WEDGE_LABEL[s.wedge]}</td>
+                    <td className="px-4 py-3 text-xs text-cream/70">{FORMAT_LABEL[s.format]}</td>
+                    <td className="px-4 py-3 text-xs text-cream/70">{WEDGE_LABEL[s.wedge]}</td>
                     <td className="px-4 py-3">
                       <NumberCell
                         value={s.performance?.hookRate}
@@ -117,7 +118,7 @@ export default function PerformanceClient({ initial }: { initial: Script[] }) {
                         defaultValue={s.performance?.notes ?? ''}
                         onBlur={(e) => updateMetric(s.id, { notes: e.target.value })}
                         placeholder="—"
-                        className="w-full bg-transparent border-b border-transparent focus:border-orage-accent outline-none text-sm"
+                        className="w-full bg-transparent border-b border-transparent focus:border-gold outline-none text-sm text-cream-soft placeholder:text-cream/30"
                       />
                     </td>
                   </tr>
@@ -128,12 +129,24 @@ export default function PerformanceClient({ initial }: { initial: Script[] }) {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
-          <PlaceholderCard title="Trending hooks this week" subtitle="v2 — coming soon" />
-          <PlaceholderCard title="Content pillars" subtitle="v2 — coming soon" />
-          <PlaceholderCard title="Organic vs Paid winners" subtitle="v2 — coming soon" />
+          <PlaceholderCard title="Trending hooks" />
+          <PlaceholderCard title="Content pillars" />
+          <PlaceholderCard title="Organic vs Paid" />
         </div>
       </main>
     </>
+  );
+}
+
+function Th({ children, align = 'left' }: { children: React.ReactNode; align?: 'left' | 'right' }) {
+  return (
+    <th
+      className={`px-4 py-3 font-display text-[10px] tracking-[0.25em] text-gold ${
+        align === 'right' ? 'text-right' : 'text-left'
+      }`}
+    >
+      {children}
+    </th>
   );
 }
 
@@ -148,18 +161,16 @@ function NumberCell({ value, onChange }: { value?: number; onChange: (v: number 
         onChange(v);
       }}
       placeholder="—"
-      className="w-20 text-right bg-transparent border-b border-transparent focus:border-orage-accent outline-none tabular-nums"
+      className="w-20 text-right bg-transparent border-b border-transparent focus:border-gold outline-none tabular-nums text-cream-soft placeholder:text-cream/30"
     />
   );
 }
 
-function PlaceholderCard({ title, subtitle }: { title: string; subtitle: string }) {
+function PlaceholderCard({ title }: { title: string }) {
   return (
-    <div className="bg-white rounded-2xl border-2 border-dashed border-orage-border p-5">
-      <div className="text-xs uppercase tracking-wider text-orage-muted font-semibold mb-1">
-        {subtitle}
-      </div>
-      <h3 className="font-bold text-lg">{title}</h3>
+    <div className="bg-ink-2 rounded-sm border border-dashed border-[color:var(--border-subtle)] p-5">
+      <div className="eyebrow mb-2">v2 — Coming soon</div>
+      <h3 className="font-display text-xl tracking-[0.05em] text-cream/60">{title}</h3>
     </div>
   );
 }

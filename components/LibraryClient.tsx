@@ -20,19 +20,21 @@ export default function LibraryClient({ scripts }: { scripts: Script[] }) {
   return (
     <>
       <FilterBar filters={filters} onChange={setFilters} />
-      <main className="max-w-[1600px] mx-auto px-4 sm:px-6 py-6">
+      <main className="max-w-[1600px] mx-auto px-4 sm:px-8 py-8">
         {filtered.length === 0 ? (
-          <div className="text-center py-20 text-orage-muted">
-            <p className="text-lg mb-3">No scripts match these filters.</p>
+          <div className="text-center py-24">
+            <p className="font-display text-2xl tracking-[0.15em] text-cream/60 mb-4">
+              No scripts match
+            </p>
             <button
               onClick={() => setFilters(DEFAULT_FILTERS)}
-              className="text-orage-accent font-semibold underline"
+              className="font-display text-[11px] tracking-[0.3em] text-gold hover:text-gold-high"
             >
-              Reset filters
+              Reset filters →
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {filtered.map((s) => (
               <ScriptCard key={s.id} script={s} />
             ))}

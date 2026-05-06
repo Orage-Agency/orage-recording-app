@@ -27,17 +27,17 @@ export default function ShotDirectionsPanel({
 
   return (
     <aside
-      className={`bg-white border-orage-border lg:border-l lg:sticky lg:top-[57px] lg:self-start lg:h-[calc(100vh-57px)] lg:overflow-y-auto transition-all ${
+      className={`bg-ink-1 border-[color:var(--border-subtle)] lg:border-l lg:sticky lg:top-[64px] lg:self-start lg:h-[calc(100vh-64px)] lg:overflow-y-auto transition-all ${
         open ? 'lg:w-80' : 'lg:w-12'
       }`}
     >
-      <div className="flex items-center justify-between p-4 border-b border-orage-border lg:sticky lg:top-0 bg-white">
-        <h3 className={`font-bold text-sm uppercase tracking-wider text-orage-muted ${open ? '' : 'lg:hidden'}`}>
+      <div className="flex items-center justify-between px-5 py-3 border-b border-[color:var(--border-subtle)] lg:sticky lg:top-0 bg-ink-1 z-10">
+        <h3 className={`eyebrow ${open ? '' : 'lg:hidden'}`}>
           Shot directions
         </h3>
         <button
           onClick={() => setOpen((v) => !v)}
-          className="hidden lg:inline-flex w-8 h-8 items-center justify-center rounded-md hover:bg-slate-100 text-orage-muted"
+          className="hidden lg:inline-flex w-8 h-8 items-center justify-center rounded-sm hover:bg-ink-2 text-gold"
           aria-label={open ? 'Collapse' : 'Expand'}
         >
           {open ? '→' : '←'}
@@ -45,22 +45,20 @@ export default function ShotDirectionsPanel({
       </div>
 
       {open && (
-        <div className="p-4 space-y-5 text-sm">
-          <div className="grid grid-cols-2 gap-3 text-xs">
+        <div className="p-5 space-y-5">
+          <div className="grid grid-cols-2 gap-3">
             <Meta label="Format" value={format} />
             <Meta label="Length" value={length} />
             <Meta label="Energy" value={energy} className="col-span-2" />
             <Meta label="Setup" value={setup} className="col-span-2" />
           </div>
 
-          <div className="border-t border-orage-border pt-4">
-            <h4 className="text-xs uppercase tracking-wider text-orage-muted font-semibold mb-2">
-              Directions
-            </h4>
-            <ul className="space-y-2">
+          <div className="border-t border-[color:var(--border-subtle)] pt-5">
+            <h4 className="eyebrow mb-3">Directions</h4>
+            <ul className="space-y-2.5">
               {directions.map((d, i) => (
                 <li key={i} className="flex items-start gap-2">
-                  <span className="text-orage-muted shrink-0">•</span>
+                  <span className="text-gold shrink-0 leading-relaxed">→</span>
                   {editing ? (
                     <>
                       <input
@@ -72,7 +70,7 @@ export default function ShotDirectionsPanel({
                           onChange(next);
                         }}
                         onBlur={onCommit}
-                        className="flex-1 bg-slate-50 border border-orage-border rounded px-2 py-1 text-sm focus:border-orage-accent outline-none"
+                        className="flex-1 bg-ink-2 border border-[color:var(--border-subtle)] focus:border-gold rounded-sm px-2 py-1 text-sm outline-none text-cream-soft"
                       />
                       <button
                         onClick={() => {
@@ -80,14 +78,14 @@ export default function ShotDirectionsPanel({
                           onChange(next);
                           onCommit();
                         }}
-                        className="text-red-500 px-1 shrink-0"
+                        className="text-cream/50 hover:text-red-400 px-1 shrink-0"
                         aria-label="Remove direction"
                       >
                         ×
                       </button>
                     </>
                   ) : (
-                    <span className="text-orage-text leading-relaxed">{d}</span>
+                    <span className="text-sm text-cream-soft leading-relaxed">{d}</span>
                   )}
                 </li>
               ))}
@@ -98,7 +96,7 @@ export default function ShotDirectionsPanel({
                   onChange([...directions, '']);
                   onCommit();
                 }}
-                className="mt-3 text-sm text-orage-accent font-semibold"
+                className="mt-3 font-display text-[11px] tracking-[0.25em] text-gold hover:text-gold-high"
               >
                 + Add direction
               </button>
@@ -113,10 +111,8 @@ export default function ShotDirectionsPanel({
 function Meta({ label, value, className }: { label: string; value: string; className?: string }) {
   return (
     <div className={className}>
-      <div className="text-orage-muted uppercase tracking-wider text-[10px] font-semibold">
-        {label}
-      </div>
-      <div className="text-orage-text text-sm">{value}</div>
+      <div className="eyebrow text-[10px] mb-1">{label}</div>
+      <div className="text-sm text-cream-soft">{value}</div>
     </div>
   );
 }

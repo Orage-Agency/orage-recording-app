@@ -3,10 +3,19 @@ export const BRAND = {
   tagline: 'AI for OKC founders',
 
   colors: {
-    primary: '#0F172A',
-    accent: '#2563EB',
-    background: '#FFFFFF',
-    text: '#0F172A',
+    bg: '#000000',
+    bgSecondary: '#151515',
+    bgContainer: '#212121',
+
+    primary: '#B68039',
+    highlight: '#E4AF7A',
+    deep: '#543C1C',
+
+    text: '#FFD69C',
+    textSecondary: '#FFE8C7',
+
+    border: 'rgba(182,128,57,0.25)',
+    borderSubtle: 'rgba(182,128,57,0.12)',
 
     visualHook: '#7C3AED',
     verbalHook: '#0891B2',
@@ -14,18 +23,13 @@ export const BRAND = {
     cta: '#DC2626',
 
     statusDraft: '#6B7280',
-    statusReady: '#D97706',
+    statusReady: '#B68039',
     statusShooting: '#2563EB',
     statusRecorded: '#7C3AED',
     statusEdited: '#0891B2',
     statusLive: '#059669',
     statusWinner: '#16A34A',
-    statusKilled: '#DC2626',
-  },
-
-  fonts: {
-    display: 'system-ui, -apple-system, sans-serif',
-    body: 'system-ui, -apple-system, sans-serif',
+    statusKilled: '#C24040',
   },
 
   logo: {
@@ -42,9 +46,9 @@ export const SECTION_COLOR: Record<string, string> = {
 };
 
 export const SECTION_LABEL: Record<string, string> = {
-  VISUAL_HOOK: 'VISUAL HOOK',
-  VERBAL_HOOK: 'VERBAL HOOK',
-  BODY: 'BODY',
+  VISUAL_HOOK: 'Visual Hook',
+  VERBAL_HOOK: 'Verbal Hook',
+  BODY: 'Body',
   CTA: 'CTA',
 };
 
@@ -61,7 +65,7 @@ export const STATUS_COLOR: Record<string, string> = {
 
 export const STATUS_LABEL: Record<string, string> = {
   draft: 'Draft',
-  ready_to_shoot: 'Ready to shoot',
+  ready_to_shoot: 'Ready',
   shooting: 'Shooting',
   recorded: 'Recorded',
   edited: 'Edited',

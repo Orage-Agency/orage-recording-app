@@ -4,20 +4,12 @@ import { useMemo, useState } from 'react';
 import type { VerbalHook, HookFormula, Wedge } from '@/lib/types';
 import { ALL_FORMULAS, ALL_WEDGES, FORMULA_LABEL, WEDGE_LABEL } from '@/lib/constants';
 
-const FORMULA_TINT: Record<HookFormula, string> = {
-  SPECIFIC_NUMBER: 'bg-emerald-50 border-emerald-200 text-emerald-900',
-  CONTRARIAN: 'bg-rose-50 border-rose-200 text-rose-900',
-  THIRD_PERSON_PROOF: 'bg-blue-50 border-blue-200 text-blue-900',
-  DIRECT_COMMAND: 'bg-amber-50 border-amber-200 text-amber-900',
-  POV_AUTHORITY: 'bg-violet-50 border-violet-200 text-violet-900',
-};
-
-const FORMULA_BADGE: Record<HookFormula, string> = {
-  SPECIFIC_NUMBER: 'bg-emerald-600',
-  CONTRARIAN: 'bg-rose-600',
-  THIRD_PERSON_PROOF: 'bg-blue-600',
-  DIRECT_COMMAND: 'bg-amber-600',
-  POV_AUTHORITY: 'bg-violet-600',
+const FORMULA_ACCENT: Record<HookFormula, string> = {
+  SPECIFIC_NUMBER: '#10B981',
+  CONTRARIAN: '#E4AF7A',
+  THIRD_PERSON_PROOF: '#3B82F6',
+  DIRECT_COMMAND: '#B68039',
+  POV_AUTHORITY: '#A78BFA',
 };
 
 export default function HooksClient({ hooks }: { hooks: VerbalHook[] }) {
@@ -37,89 +29,97 @@ export default function HooksClient({ hooks }: { hooks: VerbalHook[] }) {
       setCopied(id);
       setTimeout(() => setCopied((c) => (c === id ? null : c)), 1500);
     } catch {
-      /* clipboard unavailable */
+      /* ignore */
     }
   };
 
   return (
     <>
-      <div className="bg-white border-b border-orage-border">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center gap-2">
-          <label className="flex items-center gap-2 bg-slate-50 border border-orage-border rounded-lg px-3 py-2 min-touch text-sm">
-            <span className="text-xs uppercase tracking-wider text-orage-muted font-semibold">
-              Formula
-            </span>
-            <select
-              value={formula}
-              onChange={(e) => setFormula(e.target.value as HookFormula | 'all')}
-              className="bg-transparent font-medium outline-none cursor-pointer"
-            >
-              <option value="all">All formulas</option>
-              {ALL_FORMULAS.map((f) => (
-                <option key={f} value={f}>
-                  {FORMULA_LABEL[f]}
-                </option>
-              ))}
-            </select>
-          </label>
+      <div className="bg-ink-1 border-b border-[color:var(--border-subtle)]">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 py-3 flex flex-wrap items-center gap-2">
+          <Selector label="Formula" value={formula} onChange={(v) => setFormula(v as HookFormula | 'all')}>
+            <option value="all" className="bg-ink-2">All formulas</option>
+            {ALL_FORMULAS.map((f) => (
+              <option key={f} value={f} className="bg-ink-2">{FORMULA_LABEL[f]}</option>
+            ))}
+          </Selector>
+          <Selector label="Wedge" value={wedge} onChange={(v) => setWedge(v as Wedge | 'all')}>
+            <option value="all" className="bg-ink-2">All wedges</option>
+            {ALL_WEDGES.map((w) => (
+              <option key={w} value={w} className="bg-ink-2">{WEDGE_LABEL[w]}</option>
+            ))}
+          </Selector>
 
-          <label className="flex items-center gap-2 bg-slate-50 border border-orage-border rounded-lg px-3 py-2 min-touch text-sm">
-            <span className="text-xs uppercase tracking-wider text-orage-muted font-semibold">
-              Wedge
-            </span>
-            <select
-              value={wedge}
-              onChange={(e) => setWedge(e.target.value as Wedge | 'all')}
-              className="bg-transparent font-medium outline-none cursor-pointer"
-            >
-              <option value="all">All wedges</option>
-              {ALL_WEDGES.map((w) => (
-                <option key={w} value={w}>
-                  {WEDGE_LABEL[w]}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <div className="ml-auto text-sm text-orage-muted">
-            <span className="font-bold text-orage-text">{filtered.length}</span> of {hooks.length} hooks
+          <div className="ml-auto font-display text-[11px] tracking-[0.25em] text-cream/60">
+            <span className="text-gold-high">{filtered.length}</span>
+            <span className="text-cream/40"> / {hooks.length}</span>
           </div>
         </div>
       </div>
 
-      <main className="max-w-[1600px] mx-auto px-4 sm:px-6 py-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filtered.map((h) => (
-          <button
-            key={h.id}
-            onClick={() => copy(h.text, h.id)}
-            className={`text-left p-5 rounded-2xl border-2 transition-all hover:shadow-md active:scale-[0.99] ${FORMULA_TINT[h.formula]}`}
-          >
-            <div className="flex items-center justify-between gap-2 mb-3">
-              <span
-                className={`text-[10px] uppercase tracking-wider font-bold text-white px-2 py-1 rounded ${FORMULA_BADGE[h.formula]}`}
-              >
-                {FORMULA_LABEL[h.formula]}
-              </span>
-              <span className="text-xs font-mono text-orage-muted">
-                {copied === h.id ? '✓ Copied' : 'Tap to copy'}
-              </span>
-            </div>
-            <p className="text-lg leading-snug font-semibold text-balance mb-3">
-              {h.text}
-            </p>
-            <div className="flex flex-wrap gap-1">
-              {h.pairsWithWedges.map((w) => (
+      <main className="max-w-[1600px] mx-auto px-4 sm:px-8 py-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {filtered.map((h) => {
+          const accent = FORMULA_ACCENT[h.formula];
+          return (
+            <button
+              key={h.id}
+              onClick={() => copy(h.text, h.id)}
+              className="text-left p-5 rounded-sm bg-ink-2 border border-[color:var(--border-subtle)] hover:border-[color:var(--border)] hover:-translate-y-0.5 transition-all"
+              style={{ borderLeftWidth: '3px', borderLeftColor: accent }}
+            >
+              <div className="flex items-center justify-between gap-2 mb-3">
                 <span
-                  key={w}
-                  className="text-[10px] px-1.5 py-0.5 rounded bg-white/70 text-orage-muted font-semibold uppercase tracking-wider"
+                  className="font-display text-[10px] tracking-[0.25em] px-2 py-1 rounded-sm"
+                  style={{ backgroundColor: `${accent}22`, color: accent, border: `1px solid ${accent}55` }}
                 >
-                  {WEDGE_LABEL[w]}
+                  {FORMULA_LABEL[h.formula]}
                 </span>
-              ))}
-            </div>
-          </button>
-        ))}
+                <span className="font-display text-[10px] tracking-[0.25em] text-cream/40">
+                  {copied === h.id ? '✓ Copied' : 'Tap to copy'}
+                </span>
+              </div>
+              <p className="text-base leading-snug font-medium text-cream-soft mb-3 text-balance">
+                {h.text}
+              </p>
+              <div className="flex flex-wrap gap-1">
+                {h.pairsWithWedges.map((w) => (
+                  <span
+                    key={w}
+                    className="font-display text-[9px] tracking-[0.2em] px-1.5 py-0.5 rounded-sm bg-black/40 text-cream/60 border border-[color:var(--border-subtle)]"
+                  >
+                    {WEDGE_LABEL[w]}
+                  </span>
+                ))}
+              </div>
+            </button>
+          );
+        })}
       </main>
     </>
+  );
+}
+
+function Selector({
+  label,
+  value,
+  onChange,
+  children,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <label className="flex items-center gap-2.5 bg-ink-2 border border-[color:var(--border-subtle)] hover:border-[color:var(--border)] transition-colors rounded-sm px-3 py-2 min-touch text-sm">
+      <span className="font-display text-[10px] tracking-[0.25em] text-gold">{label}</span>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="bg-transparent text-cream-soft font-medium outline-none cursor-pointer pr-1"
+      >
+        {children}
+      </select>
+    </label>
   );
 }

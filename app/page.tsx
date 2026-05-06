@@ -11,9 +11,9 @@ export default async function HomePage() {
   return (
     <>
       <TopBar>
-        <div className="text-sm text-orage-muted">
-          <span className="font-bold text-orage-text">{scripts.length}</span> scripts ·{' '}
-          <span className="font-bold text-amber-600">{recommended}</span> ★
+        <div className="font-display text-[11px] tracking-[0.25em] text-cream/70">
+          <span className="text-gold-high">{scripts.length}</span> scripts ·{' '}
+          <span className="text-gold">{recommended}</span> ★
         </div>
       </TopBar>
       <LibraryClient scripts={scripts} />

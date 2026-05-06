@@ -9,14 +9,22 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        orage: {
-          primary: '#0F172A',
-          accent: '#2563EB',
-          bg: '#F8FAFC',
-          surface: '#FFFFFF',
-          text: '#0F172A',
-          muted: '#64748B',
-          border: '#E2E8F0',
+        ink: {
+          0: '#000000',
+          1: '#151515',
+          2: '#212121',
+          3: '#2a2a2a',
+        },
+        gold: {
+          DEFAULT: '#B68039',
+          high: '#E4AF7A',
+          deep: '#543C1C',
+        },
+        cream: {
+          DEFAULT: '#FFD69C',
+          soft: '#FFE8C7',
+          alt: '#F5E5D7',
+          light: '#FCE8D4',
         },
         section: {
           visual: '#7C3AED',
@@ -26,17 +34,21 @@ const config: Config = {
         },
         status: {
           draft: '#6B7280',
-          ready: '#D97706',
+          ready: '#B68039',
           shooting: '#2563EB',
           recorded: '#7C3AED',
           edited: '#0891B2',
           live: '#059669',
           winner: '#16A34A',
-          killed: '#DC2626',
+          killed: '#C24040',
         },
       },
       fontFamily: {
-        display: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'system-ui', 'sans-serif'],
+        display: ['var(--font-bebas)', 'Impact', 'Anton', 'Oswald', 'Arial Narrow', 'sans-serif'],
+        sans: ['var(--font-montserrat)', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+      },
+      borderColor: {
+        DEFAULT: 'rgba(182,128,57,0.25)',
       },
     },
   },

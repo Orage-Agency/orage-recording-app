@@ -29,7 +29,7 @@ export default function AutoTextarea({ value, onChange, onBlur, placeholder, cla
       onBlur={onBlur}
       placeholder={placeholder}
       rows={1}
-      className={`w-full bg-transparent outline-none resize-none border-b border-transparent focus:border-orage-accent transition-colors ${
+      className={`w-full bg-transparent outline-none resize-none border-b border-transparent focus:border-gold transition-colors ${
         italic ? 'italic' : ''
       } ${className ?? ''}`}
     />

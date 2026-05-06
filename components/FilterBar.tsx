@@ -33,15 +33,21 @@ interface Props {
 }
 
 export default function FilterBar({ filters, onChange }: Props) {
+  const isDefault =
+    filters.status === 'all' &&
+    filters.wedge === 'all' &&
+    filters.format === 'all' &&
+    filters.source === 'all';
+
   return (
-    <div className="bg-white border-b border-orage-border">
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 py-3 flex items-center gap-2 flex-wrap">
+    <div className="bg-ink-1 border-b border-[color:var(--border-subtle)]">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 py-3 flex items-center gap-2 flex-wrap">
         <SelectField
           label="Status"
           value={filters.status}
           onChange={(v) => onChange({ ...filters, status: v as Status | 'all' })}
           options={[
-            { value: 'all', label: 'All statuses' },
+            { value: 'all', label: 'All' },
             ...ALL_STATUSES.map((s) => ({ value: s, label: STATUS_LABEL[s] })),
           ]}
         />
@@ -50,7 +56,7 @@ export default function FilterBar({ filters, onChange }: Props) {
           value={filters.format}
           onChange={(v) => onChange({ ...filters, format: v as Format | 'all' })}
           options={[
-            { value: 'all', label: 'All formats' },
+            { value: 'all', label: 'All' },
             ...ALL_FORMATS.map((f) => ({ value: f, label: FORMAT_LABEL[f] })),
           ]}
         />
@@ -59,7 +65,7 @@ export default function FilterBar({ filters, onChange }: Props) {
           value={filters.wedge}
           onChange={(v) => onChange({ ...filters, wedge: v as Wedge | 'all' })}
           options={[
-            { value: 'all', label: 'All wedges' },
+            { value: 'all', label: 'All' },
             ...ALL_WEDGES.map((w) => ({ value: w, label: WEDGE_LABEL[w] })),
           ]}
         />
@@ -68,14 +74,15 @@ export default function FilterBar({ filters, onChange }: Props) {
           value={filters.source}
           onChange={(v) => onChange({ ...filters, source: v as Source | 'all' })}
           options={[
-            { value: 'all', label: 'All sources' },
+            { value: 'all', label: 'All' },
             ...ALL_SOURCES.map((s) => ({ value: s, label: s })),
           ]}
         />
 
         <button
           onClick={() => onChange(DEFAULT_FILTERS)}
-          className="ml-auto text-sm font-medium text-orage-muted hover:text-orage-text px-3 py-2 rounded-md hover:bg-slate-100"
+          disabled={isDefault}
+          className="ml-auto font-display text-[11px] tracking-[0.25em] text-cream/60 hover:text-gold-high disabled:opacity-30 disabled:cursor-not-allowed px-3 py-2 min-touch"
         >
           Reset
         </button>
@@ -96,17 +103,17 @@ function SelectField({
   options: { value: string; label: string }[];
 }) {
   return (
-    <label className="flex items-center gap-2 bg-slate-50 border border-orage-border rounded-lg px-3 py-2 min-touch text-sm">
-      <span className="text-xs uppercase tracking-wider text-orage-muted font-semibold">
+    <label className="flex items-center gap-2.5 bg-ink-2 border border-[color:var(--border-subtle)] hover:border-[color:var(--border)] transition-colors rounded-sm px-3 py-2 min-touch text-sm">
+      <span className="font-display text-[10px] tracking-[0.25em] text-gold">
         {label}
       </span>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="bg-transparent font-medium outline-none cursor-pointer"
+        className="bg-transparent text-cream-soft font-medium outline-none cursor-pointer pr-1"
       >
         {options.map((o) => (
-          <option key={o.value} value={o.value}>
+          <option key={o.value} value={o.value} className="bg-ink-2 text-cream-soft">
             {o.label}
           </option>
         ))}

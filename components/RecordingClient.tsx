@@ -41,10 +41,7 @@ export default function RecordingClient({ initial, nextScriptId }: Props) {
     (patch: Partial<Script>, commit = false) => {
       setScript((prev) => {
         const next = { ...prev, ...patch };
-        if (commit) {
-          // fire and forget
-          persist(next);
-        }
+        if (commit) persist(next);
         return next;
       });
     },
@@ -93,9 +90,7 @@ export default function RecordingClient({ initial, nextScriptId }: Props) {
   };
 
   const goNext = () => {
-    if (nextScriptId) {
-      router.push(`/script/${nextScriptId}`);
-    }
+    if (nextScriptId) router.push(`/script/${nextScriptId}`);
   };
 
   const setStatus = (status: Status) => {
@@ -105,19 +100,19 @@ export default function RecordingClient({ initial, nextScriptId }: Props) {
   };
 
   const saveLabel = useMemo(() => {
-    if (save === 'saving') return 'Saving…';
+    if (save === 'saving') return 'Saving';
     if (save === 'saved') return 'Saved';
-    if (save === 'error') return 'Save failed';
+    if (save === 'error') return 'Error';
     return '';
   }, [save]);
 
   return (
     <>
-      <header className="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-orage-border">
-        <div className="flex items-center gap-3 px-3 sm:px-5 py-3 max-w-[1600px] mx-auto">
+      <header className="sticky top-0 z-30 bg-black/85 backdrop-blur border-b border-[color:var(--border-subtle)]">
+        <div className="flex items-center gap-3 px-3 sm:px-6 py-3 max-w-[1600px] mx-auto">
           <Link
             href="/"
-            className="w-11 h-11 inline-flex items-center justify-center rounded-lg hover:bg-slate-100 text-orage-muted shrink-0"
+            className="w-11 h-11 inline-flex items-center justify-center rounded-sm hover:bg-ink-2 text-gold shrink-0"
             aria-label="Back to library"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -126,32 +121,34 @@ export default function RecordingClient({ initial, nextScriptId }: Props) {
           </Link>
 
           <div className="min-w-0 flex-1">
-            <div className="text-xs text-orage-muted font-mono">
+            <div className="font-display text-[10px] tracking-[0.3em] text-gold">
               Script {String(script.number).padStart(2, '0')}
             </div>
-            <h1 className="font-bold text-base sm:text-lg leading-tight truncate">
+            <h1 className="font-display text-base sm:text-xl tracking-[0.06em] leading-tight text-cream-soft truncate">
               {script.title}
             </h1>
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            <span className="text-xs text-orage-muted hidden sm:inline-block min-w-16 text-right">
-              {saveLabel}
-            </span>
+          <div className="flex items-center gap-2 shrink-0">
+            {saveLabel && (
+              <span className="font-display text-[10px] tracking-[0.25em] text-cream/50 hidden sm:inline-block min-w-12 text-right">
+                {saveLabel}
+              </span>
+            )}
 
-            <div className="inline-flex bg-slate-100 rounded-lg p-1 text-sm font-semibold">
+            <div className="inline-flex bg-ink-2 border border-[color:var(--border-subtle)] rounded-sm p-0.5 font-display text-xs tracking-[0.2em]">
               <button
                 onClick={() => setMode('READ')}
-                className={`px-3 py-1.5 rounded-md min-touch transition-colors ${
-                  mode === 'READ' ? 'bg-white text-orage-text shadow-sm' : 'text-orage-muted'
+                className={`px-3 py-1.5 rounded-sm min-touch transition-colors ${
+                  mode === 'READ' ? 'bg-gold text-black' : 'text-cream/70 hover:text-cream-soft'
                 }`}
               >
                 Read
               </button>
               <button
                 onClick={() => setMode('EDIT')}
-                className={`px-3 py-1.5 rounded-md min-touch transition-colors ${
-                  mode === 'EDIT' ? 'bg-white text-orage-text shadow-sm' : 'text-orage-muted'
+                className={`px-3 py-1.5 rounded-sm min-touch transition-colors ${
+                  mode === 'EDIT' ? 'bg-gold text-black' : 'text-cream/70 hover:text-cream-soft'
                 }`}
               >
                 Edit
@@ -164,10 +161,10 @@ export default function RecordingClient({ initial, nextScriptId }: Props) {
       </header>
 
       <div className="flex flex-col lg:flex-row max-w-[1600px] mx-auto">
-        <main className="flex-1 px-3 sm:px-6 py-5 pb-32 space-y-4">
+        <main className="flex-1 px-3 sm:px-6 py-6 pb-32 space-y-4">
           {mode === 'EDIT' && (
-            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-900">
-              <strong>Edit mode</strong> — changes auto-save when you tap away from a field.
+            <div className="bg-gold/10 border-l-4 border-gold rounded-sm px-4 py-3 font-display text-xs tracking-[0.2em] text-gold-high">
+              Edit mode — changes auto-save when you tap away
             </div>
           )}
 
@@ -183,14 +180,14 @@ export default function RecordingClient({ initial, nextScriptId }: Props) {
           ))}
 
           {mode === 'EDIT' && (
-            <div className="rounded-2xl border-2 border-dashed border-orage-border p-5 text-center">
-              <div className="text-sm text-orage-muted mb-3">Add section</div>
+            <div className="rounded-sm border border-dashed border-[color:var(--border)] p-5 text-center">
+              <div className="eyebrow mb-3">Add section</div>
               <div className="flex flex-wrap gap-2 justify-center">
                 {(['VISUAL_HOOK', 'VERBAL_HOOK', 'BODY', 'CTA'] as SectionType[]).map((t) => (
                   <button
                     key={t}
                     onClick={() => addSection(t)}
-                    className="px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-sm font-semibold min-touch"
+                    className="font-display text-[11px] tracking-[0.2em] px-3 py-2 rounded-sm bg-ink-2 hover:bg-ink-3 border border-[color:var(--border-subtle)] hover:border-[color:var(--border)] text-cream-soft min-touch"
                   >
                     + {t.replace('_', ' ')}
                   </button>
@@ -200,16 +197,14 @@ export default function RecordingClient({ initial, nextScriptId }: Props) {
           )}
 
           {mode === 'EDIT' && (
-            <div className="rounded-2xl bg-white border border-orage-border p-5 space-y-3">
-              <div className="text-xs uppercase tracking-wider text-orage-muted font-semibold">
-                Notes
-              </div>
+            <div className="rounded-sm bg-ink-2 border border-[color:var(--border-subtle)] p-5 space-y-3">
+              <div className="eyebrow">Notes</div>
               <textarea
                 value={script.notes}
                 onChange={(e) => update({ notes: e.target.value })}
                 onBlur={commit}
                 placeholder="Free-form notes for this script..."
-                className="w-full min-h-[100px] bg-slate-50 border border-orage-border rounded-lg px-3 py-2 text-sm focus:border-orage-accent outline-none resize-y"
+                className="w-full min-h-[100px] bg-black/30 border border-[color:var(--border-subtle)] focus:border-gold rounded-sm px-3 py-2 text-sm outline-none resize-y text-cream-soft"
               />
             </div>
           )}
@@ -227,19 +222,19 @@ export default function RecordingClient({ initial, nextScriptId }: Props) {
         />
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur border-t border-orage-border">
-        <div className="max-w-[1600px] mx-auto px-3 sm:px-5 py-3 flex items-center gap-3">
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-black/90 backdrop-blur border-t border-[color:var(--border-subtle)]">
+        <div className="max-w-[1600px] mx-auto px-3 sm:px-6 py-3 flex items-center gap-3">
           <button
             onClick={markRecorded}
             disabled={script.status === 'recorded'}
-            className="flex-1 sm:flex-none bg-orage-primary text-white font-bold px-5 py-3 rounded-xl shadow hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed min-touch"
+            className="flex-1 sm:flex-none font-display text-sm tracking-[0.2em] bg-gold text-black px-5 py-3 rounded-sm hover:bg-gold-high disabled:opacity-40 disabled:cursor-not-allowed min-touch"
           >
             {script.status === 'recorded' ? '✓ Recorded' : '● Mark Recorded'}
           </button>
 
-          <div className="flex-1 text-center text-sm">
-            <span className="text-orage-muted">Sections complete</span>{' '}
-            <span className="font-bold text-orage-text">
+          <div className="flex-1 text-center font-display text-xs tracking-[0.2em]">
+            <span className="text-cream/50">Sections </span>
+            <span className="text-gold-high">
               {completed}/{total}
             </span>
           </div>
@@ -247,7 +242,7 @@ export default function RecordingClient({ initial, nextScriptId }: Props) {
           <button
             onClick={goNext}
             disabled={!nextScriptId}
-            className="flex-1 sm:flex-none bg-slate-100 hover:bg-slate-200 text-orage-text font-bold px-5 py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed min-touch"
+            className="flex-1 sm:flex-none font-display text-sm tracking-[0.2em] bg-ink-2 border border-[color:var(--border)] text-cream-soft px-5 py-3 rounded-sm hover:border-gold hover:text-gold-high disabled:opacity-40 disabled:cursor-not-allowed min-touch"
           >
             Next ↓
           </button>
